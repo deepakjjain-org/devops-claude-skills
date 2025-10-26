@@ -47,6 +47,20 @@ This provides an overview of:
 
 Based on triage results, focus investigation:
 
+**For Namespace-Level Issues:**
+```bash
+python3 scripts/check_namespace.py <namespace>
+```
+
+This provides comprehensive namespace health:
+- Pod status (running, pending, failed, crashlooping)
+- Service health and endpoints
+- Deployment availability
+- PVC status
+- Resource quota usage
+- Recent events
+- Actionable recommendations
+
 **For Pod Issues:**
 ```bash
 python3 scripts/diagnose_pod.py <namespace> <pod-name>
@@ -192,6 +206,32 @@ Usage: `python3 scripts/cluster_health.py`
 
 Best used as first diagnostic step to get overall cluster health snapshot.
 
+### check_namespace.py
+
+Namespace-level health check and diagnostics:
+- Pod health (running, pending, failed, crashlooping, image pull errors)
+- Service health and endpoints
+- Deployment availability status
+- PersistentVolumeClaim status
+- Resource quota usage and limits
+- Recent namespace events
+- Health status assessment
+- Actionable recommendations
+
+**Usage:**
+```bash
+# Human-readable output
+python3 scripts/check_namespace.py <namespace>
+
+# JSON output for automation
+python3 scripts/check_namespace.py <namespace> --json
+
+# Include more events
+python3 scripts/check_namespace.py <namespace> --events 20
+```
+
+Best used when troubleshooting issues in a specific namespace or assessing overall namespace health.
+
 ### diagnose_pod.py
 Detailed pod-level diagnostics:
 - Pod phase and status
@@ -235,6 +275,41 @@ Structured incident response framework including:
 - Best practices for prevention, preparedness, response, and recovery
 
 Read this when responding to production incidents or planning incident response procedures.
+
+### references/performance_troubleshooting.md
+
+Comprehensive performance diagnosis and optimization guide covering:
+- **High Latency Issues** - API response time, request latency troubleshooting
+- **CPU Performance** - Throttling detection, profiling, optimization
+- **Memory Performance** - OOM issues, leak detection, heap profiling
+- **Network Performance** - Latency, packet loss, DNS resolution
+- **Storage I/O Performance** - Disk performance testing, optimization
+- **Application-Level Metrics** - Prometheus integration, distributed tracing
+- **Cluster-Wide Performance** - Control plane, scheduler, resource utilization
+
+Read this when:
+- Investigating slow application response times
+- Diagnosing CPU or memory performance issues
+- Troubleshooting network latency or connectivity
+- Optimizing storage I/O performance
+- Setting up performance monitoring
+
+### references/helm_troubleshooting.md
+
+Complete guide to Helm troubleshooting including:
+- **Release Issues** - Stuck releases, missing resources, state problems
+- **Installation Failures** - Chart conflicts, validation errors, template rendering
+- **Upgrade and Rollback** - Failed upgrades, immutable field errors, rollback procedures
+- **Values and Configuration** - Values not applied, parsing errors, secret handling
+- **Chart Dependencies** - Dependency updates, version conflicts, subchart values
+- **Hooks and Lifecycle** - Hook failures, cleanup issues
+- **Repository Issues** - Chart access problems, version mismatches
+
+Read this when:
+- Working with Helm-deployed applications
+- Troubleshooting chart installations or upgrades
+- Debugging Helm release states
+- Managing chart dependencies
 
 ## Best Practices
 

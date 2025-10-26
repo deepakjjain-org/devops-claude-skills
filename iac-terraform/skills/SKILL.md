@@ -37,12 +37,23 @@ Is this reusable across environments/projects?
 
 When building reusable infrastructure:
 
-1. **Use module template structure:**
+1. **Scaffold new module with script:**
+```bash
+python3 scripts/init_module.py my-module-name
+```
+
+This automatically creates:
+- Standard module file structure
+- Template files with proper formatting
+- Examples directory
+- README with documentation
+
+2. **Use module template structure:**
    - See `assets/templates/MODULE_TEMPLATE.md` for complete structure
    - Required files: `main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `README.md`
    - Recommended: `examples/` directory with working examples
 
-2. **Follow module best practices:**
+3. **Follow module best practices:**
    - Single responsibility - one module, one purpose
    - Sensible defaults for optional variables
    - Complete descriptions for all variables and outputs
@@ -390,7 +401,93 @@ Each issue includes:
 - Step-by-step resolution
 - Prevention strategies
 
+### references/cost_optimization.md
+
+Cloud cost optimization strategies for Terraform-managed infrastructure:
+- **Right-Sizing Resources** - Compute, database, and storage optimization
+- **Spot and Reserved Instances** - Cost-effective instance strategies
+- **Storage Optimization** - S3 lifecycle policies, EBS volume types
+- **Networking Costs** - VPC endpoints, data transfer optimization
+- **Resource Lifecycle** - Scheduled shutdown, cleanup automation
+- **Cost Tagging** - Comprehensive tagging for cost allocation
+- **Monitoring and Alerts** - Budget alerts, anomaly detection
+- **Multi-Cloud** - Azure, GCP cost optimization patterns
+
+Read this when:
+- Planning infrastructure to minimize costs
+- Conducting cost reviews or optimization initiatives
+- Implementing auto-scaling and scheduling
+- Setting up cost monitoring and alerts
+- Designing cost-effective architectures
+
+## CI/CD Workflows
+
+Ready-to-use CI/CD pipeline templates in `assets/workflows/`:
+
+### github-actions-terraform.yml
+
+Complete GitHub Actions workflow including:
+- Terraform validation and formatting checks
+- TFLint linting
+- Checkov security scanning
+- Terraform plan on PRs with comment posting
+- Terraform apply on main branch with approval
+- OIDC authentication support
+
+### github-actions-terragrunt.yml
+
+Terragrunt-specific workflow featuring:
+- Changed module detection
+- Multi-module parallel planning
+- Run-all commands
+- Dependency-aware apply ordering
+- Manual workflow dispatch with environment selection
+
+### gitlab-ci-terraform.yml
+
+GitLab CI/CD pipeline with:
+- Multi-stage pipeline (validate, lint, security, plan, apply)
+- Artifact management
+- Manual deployment gates
+- Multi-environment configuration examples
+
+Use these templates as starting points for your CI/CD pipelines. Customize based on your:
+- Cloud provider and authentication method
+- Repository structure
+- Team approval workflows
+- Environment promotion strategy
+
 ## Scripts
+
+### init_module.py
+
+Scaffolds a new Terraform module with proper structure and template files.
+
+**Usage:**
+```bash
+# Create module in current directory
+python3 scripts/init_module.py my-vpc
+
+# Create in specific path
+python3 scripts/init_module.py my-vpc --path ./modules
+
+# Get JSON output
+python3 scripts/init_module.py my-vpc --json
+```
+
+**Creates:**
+- `main.tf` - Resource definitions with TODO placeholders
+- `variables.tf` - Input variables with validation examples
+- `outputs.tf` - Output values with descriptions
+- `versions.tf` - Terraform and provider version constraints
+- `README.md` - Module documentation template
+- `examples/complete/` - Complete usage example
+
+**Use when:**
+- Starting a new Terraform module
+- Ensuring consistent module structure across team
+- Quickly bootstrapping module development
+- Teaching module best practices
 
 ### inspect_state.py
 
