@@ -1,0 +1,18 @@
+{
+  "name": "devops-skills",
+  "owner": {
+    "name": "Ahmad Asmar"
+  },
+  "plugins": [
+    {
+      "name": "iac-terraform",
+      "source": "./iac-terraform",
+      "description": "Infrastructure as Code with Terraform and Terragrunt"
+    },
+    {
+      "name": "k8s-troubleshooter",
+      "source": "./k8s-troubleshooter",
+      "description": "Systematic Kubernetes troubleshooting and incident response"
+    }
+  ]
+}
