@@ -10,6 +10,9 @@ Infrastructure as Code with Terraform and Terragrunt. Use for creating, validati
 ### k8s-troubleshooter
 Systematic Kubernetes troubleshooting and incident response. Diagnose pod failures, cluster issues, performance problems, and production incidents.
 
+### ci-cd
+CI/CD pipeline design, optimization, security, and troubleshooting. Create workflows, optimize build performance, implement caching, secure pipelines, and debug issues across GitHub Actions, GitLab CI, and other platforms.
+
 ## Installation
 
 Add the marketplace:
@@ -21,6 +24,7 @@ Install skills:
 ```bash
 /plugin install iac-terraform@devops-skills
 /plugin install k8s-troubleshooter@devops-skills
+/plugin install ci-cd@devops-skills
 ```
 
 ## Contributing

@@ -13,6 +13,11 @@
       "name": "k8s-troubleshooter",
       "source": "./k8s-troubleshooter",
       "description": "Systematic Kubernetes troubleshooting and incident response"
+    },
+    {
+      "name": "ci-cd",
+      "source": "./ci-cd",
+      "description": "CI/CD pipeline design, optimization, security, and troubleshooting"
     }
   ]
 }
