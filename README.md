@@ -26,6 +26,9 @@ Find unused resources, analyze Reserved Instance opportunities, detect cost anom
 - 💰 Proven to find real cost savings on first run
 - ⚡ Full integration with AWS APIs (EC2, RDS, EBS, S3, CloudWatch, Cost Explorer)
 
+### ci-cd
+CI/CD pipeline design, optimization, security, and troubleshooting. Create workflows, optimize build performance, implement caching, secure pipelines, and debug issues across GitHub Actions, GitLab CI, and other platforms.
+
 ## Installation
 
 Add the marketplace:
@@ -38,6 +41,7 @@ Install skills:
 /plugin install iac-terraform@devops-skills
 /plugin install k8s-troubleshooter@devops-skills
 /plugin install aws-cost-finops@devops-skills
+/plugin install ci-cd@devops-skills
 ```
 
 ## Usage

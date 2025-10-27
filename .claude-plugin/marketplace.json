@@ -18,6 +18,9 @@
       "name": "aws-cost-finops",
       "source": "./aws-cost-finops",
       "description": "AWS cost optimization and FinOps workflows with automated analysis scripts"
+      "name": "ci-cd",
+      "source": "./ci-cd",
+      "description": "CI/CD pipeline design, optimization, security, and troubleshooting"
     }
   ]
 }
