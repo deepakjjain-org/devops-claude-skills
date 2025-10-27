@@ -20,13 +20,20 @@ devops-claude-skills/
 │       ├── references/          # Supporting documentation
 │       ├── scripts/             # Diagnostic/utility scripts
 │       └── assets/              # Templates and resources
-└── k8s-troubleshooter/          # Skill: Kubernetes troubleshooting
+├── k8s-troubleshooter/          # Skill: Kubernetes troubleshooting
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── skills/
+│       ├── SKILL.md
+│       ├── references/
+│       └── scripts/
+└── aws-cost-finops/             # Skill: AWS cost optimization & FinOps
     ├── .claude-plugin/
     │   └── plugin.json
-    └── skills/
-        ├── SKILL.md
-        ├── references/
-        └── scripts/
+    ├── SKILL.md                 # Main skill content (at root level)
+    ├── scripts/                 # 6 automated analysis scripts
+    ├── references/              # Best practices and alternatives
+    └── assets/templates/        # Monthly report template
 ```
 
 ## Architecture Principles
@@ -79,6 +86,24 @@ Each skill includes Python scripts that follow a common pattern:
 - `skills/scripts/diagnose_pod.py`: Pod-level diagnostics with actionable recommendations
 
 **Workflow Pattern**: Systematic triage (Gather Context → Initial Triage → Deep Dive → Root Cause → Remediation → Verify)
+
+### aws-cost-finops
+**Purpose**: AWS cost optimization and FinOps workflows
+
+**Key Components**:
+- `SKILL.md`: Comprehensive cost optimization workflows (monthly reviews, RI analysis, instance migrations, Spot evaluation)
+- `references/best_practices.md`: Cost optimization strategies across compute, storage, network, and database services
+- `references/service_alternatives.md`: Cost-effective service selection guide (EC2 vs Lambda, S3 tiers, RDS vs Aurora, NAT alternatives)
+- `references/finops_governance.md`: Organizational FinOps framework (tagging, budgets, monthly reviews, chargeback/showback)
+- `scripts/find_unused_resources.py`: Find unattached volumes, old snapshots, unused IPs, idle NAT Gateways, idle instances, unused load balancers
+- `scripts/analyze_ri_recommendations.py`: Analyze EC2/RDS usage patterns and recommend Reserved Instance purchases
+- `scripts/detect_old_generations.py`: Identify old generation instances (t2→t3, Intel→Graviton) with migration recommendations
+- `scripts/spot_recommendations.py`: Evaluate workloads for Spot instance suitability with savings estimates
+- `scripts/rightsizing_analyzer.py`: Find oversized EC2/RDS instances using CloudWatch metrics
+- `scripts/cost_anomaly_detector.py`: Detect cost spikes, identify top cost drivers, generate forecasts
+- `assets/templates/monthly_cost_report.md`: Complete monthly cost optimization report template
+
+**Workflow Pattern**: Systematic optimization (Discover → Analyze → Prioritize → Implement → Monitor)
 
 ## Contributing New Skills
 
@@ -140,6 +165,7 @@ Skills can be tested by:
    ```bash
    /plugin install iac-terraform@devops-skills
    /plugin install k8s-troubleshooter@devops-skills
+   /plugin install aws-cost-finops@devops-skills
    ```
 
 3. **Testing script functionality**:
@@ -151,6 +177,14 @@ Skills can be tested by:
    # Kubernetes scripts
    python3 k8s-troubleshooter/skills/scripts/cluster_health.py
    python3 k8s-troubleshooter/skills/scripts/diagnose_pod.py <namespace> <pod>
+
+   # AWS cost optimization scripts
+   python3 aws-cost-finops/scripts/find_unused_resources.py
+   python3 aws-cost-finops/scripts/analyze_ri_recommendations.py --days 60
+   python3 aws-cost-finops/scripts/detect_old_generations.py --region us-east-1
+   python3 aws-cost-finops/scripts/spot_recommendations.py
+   python3 aws-cost-finops/scripts/rightsizing_analyzer.py --days 30
+   python3 aws-cost-finops/scripts/cost_anomaly_detector.py --days 30
    ```
 
 ## Design Philosophy
@@ -187,4 +221,5 @@ Skills can be tested by:
 - Each skill's `plugin.json` must match its entry in `marketplace.json`
 - SKILL.md files use YAML frontmatter with `name` and `description` fields
 - Skills are invoked via `/plugin install` commands after marketplace is added
-- Python scripts assume standard DevOps tooling is available (terraform, kubectl, etc.)
+- Python scripts assume standard DevOps tooling is available (terraform, kubectl, aws cli, etc.)
+- AWS cost optimization scripts require boto3 and tabulate: `pip install boto3 tabulate`

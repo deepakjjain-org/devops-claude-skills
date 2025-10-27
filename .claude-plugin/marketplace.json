@@ -13,6 +13,11 @@
       "name": "k8s-troubleshooter",
       "source": "./k8s-troubleshooter",
       "description": "Systematic Kubernetes troubleshooting and incident response"
+    },
+    {
+      "name": "aws-cost-finops",
+      "source": "./aws-cost-finops",
+      "description": "AWS cost optimization and FinOps workflows with automated analysis scripts"
     }
   ]
 }
