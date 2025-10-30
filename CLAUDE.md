@@ -27,13 +27,27 @@ devops-claude-skills/
 │       ├── SKILL.md
 │       ├── references/
 │       └── scripts/
-└── aws-cost-finops/             # Skill: AWS cost optimization & FinOps
+├── aws-cost-finops/             # Skill: AWS cost optimization & FinOps
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── SKILL.md                 # Main skill content (at root level)
+│   ├── scripts/                 # 6 automated analysis scripts
+│   ├── references/              # Best practices and alternatives
+│   └── assets/templates/        # Monthly report template
+├── ci-cd/                       # Skill: CI/CD pipelines & DevSecOps
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── SKILL.md
+│   ├── scripts/
+│   ├── references/
+│   └── assets/
+└── monitoring-observability/    # Skill: Monitoring & observability
     ├── .claude-plugin/
     │   └── plugin.json
     ├── SKILL.md                 # Main skill content (at root level)
     ├── scripts/                 # 6 automated analysis scripts
-    ├── references/              # Best practices and alternatives
-    └── assets/templates/        # Monthly report template
+    ├── references/              # 6 comprehensive guides
+    └── assets/templates/        # Prometheus alerts, OTel config, runbooks
 ```
 
 ## Architecture Principles
@@ -105,6 +119,43 @@ Each skill includes Python scripts that follow a common pattern:
 
 **Workflow Pattern**: Systematic optimization (Discover → Analyze → Prioritize → Implement → Monitor)
 
+### ci-cd
+**Purpose**: CI/CD pipeline design, optimization, and DevSecOps integration
+
+**Key Components**:
+- `SKILL.md`: Comprehensive CI/CD workflows including GitHub Actions, GitLab CI, pipeline optimization, security scanning, and troubleshooting
+- `references/best_practices.md`: Pipeline design patterns, caching strategies, security best practices
+- `references/security.md`: DevSecOps practices, SAST/DAST/SCA integration, secret management
+- `references/optimization.md`: Build performance optimization, parallel execution, artifact management
+- `references/devsecops.md`: Security tooling integration (Snyk, Trivy, SonarQube)
+- `references/troubleshooting.md`: Common pipeline issues and debugging strategies
+
+**Workflow Pattern**: Task-based with security integration (Design → Optimize → Secure → Debug)
+
+### monitoring-observability
+**Purpose**: Monitoring and observability strategy, implementation, and troubleshooting
+
+**Key Components**:
+- `SKILL.md`: Comprehensive observability workflows including metrics design, log aggregation, distributed tracing, alerting, SLOs, and tool selection
+- `references/metrics_design.md`: Four Golden Signals, RED/USE methods, metric types, cardinality best practices, dashboard design
+- `references/alerting_best_practices.md`: Alert design patterns, multi-window burn rate alerting, runbook structure, on-call practices
+- `references/logging_guide.md`: Structured logging, log aggregation patterns (ELK, Loki, CloudWatch, Fluentd), query patterns, PII redaction
+- `references/tracing_guide.md`: OpenTelemetry instrumentation (Python, Node.js, Go, Java), distributed tracing, sampling strategies, backend comparison
+- `references/slo_sla_guide.md`: SLI/SLO/SLA definitions, error budget policies, burn rate alerting, monthly reporting
+- `references/tool_comparison.md`: Comprehensive comparison of monitoring tools (Prometheus, Datadog, ELK, Loki, CloudWatch, Grafana, Jaeger, Tempo)
+- `scripts/analyze_metrics.py`: Query Prometheus/CloudWatch metrics, detect anomalies, analyze trends
+- `scripts/alert_quality_checker.py`: Audit Prometheus alert rules against best practices
+- `scripts/slo_calculator.py`: Calculate SLO compliance, error budgets, and burn rates
+- `scripts/log_analyzer.py`: Parse logs for errors, patterns, and stack traces
+- `scripts/dashboard_generator.py`: Generate Grafana dashboards for web apps, Kubernetes, databases
+- `scripts/health_check_validator.py`: Validate health check endpoints against best practices
+- `assets/templates/prometheus-alerts/webapp-alerts.yml`: Production-ready web application alerts with SLO-based burn rate alerting
+- `assets/templates/prometheus-alerts/kubernetes-alerts.yml`: Kubernetes monitoring alerts (pods, nodes, deployments, resources, jobs)
+- `assets/templates/otel-config/collector-config.yaml`: OpenTelemetry Collector configuration with multiple exporters
+- `assets/templates/runbooks/incident-runbook-template.md`: Comprehensive incident response runbook template
+
+**Workflow Pattern**: Decision-tree based (Setup from scratch? → Existing issue? → Improving monitoring?) with 8 core workflows
+
 ## Contributing New Skills
 
 When adding a new DevOps skill to this marketplace:
@@ -166,6 +217,8 @@ Skills can be tested by:
    /plugin install iac-terraform@devops-skills
    /plugin install k8s-troubleshooter@devops-skills
    /plugin install aws-cost-finops@devops-skills
+   /plugin install ci-cd@devops-skills
+   /plugin install monitoring-observability@devops-skills
    ```
 
 3. **Testing script functionality**:
@@ -185,6 +238,15 @@ Skills can be tested by:
    python3 aws-cost-finops/scripts/spot_recommendations.py
    python3 aws-cost-finops/scripts/rightsizing_analyzer.py --days 30
    python3 aws-cost-finops/scripts/cost_anomaly_detector.py --days 30
+
+   # Monitoring & observability scripts
+   python3 monitoring-observability/scripts/slo_calculator.py --table
+   python3 monitoring-observability/scripts/alert_quality_checker.py alerts.yml
+   python3 monitoring-observability/scripts/analyze_metrics.py prometheus --endpoint http://localhost:9090 --query 'rate(http_requests_total[5m])'
+   python3 monitoring-observability/scripts/log_analyzer.py application.log
+   python3 monitoring-observability/scripts/dashboard_generator.py webapp --title "My App" --service myapp --output dashboard.json
+   python3 monitoring-observability/scripts/health_check_validator.py https://api.example.com/health
+   python3 monitoring-observability/scripts/datadog_cost_analyzer.py --api-key $DD_API_KEY --app-key $DD_APP_KEY
    ```
 
 ## Design Philosophy
@@ -223,3 +285,4 @@ Skills can be tested by:
 - Skills are invoked via `/plugin install` commands after marketplace is added
 - Python scripts assume standard DevOps tooling is available (terraform, kubectl, aws cli, etc.)
 - AWS cost optimization scripts require boto3 and tabulate: `pip install boto3 tabulate`
+- Monitoring & observability scripts require requests, boto3, tabulate, and pyyaml: `pip install requests boto3 tabulate pyyaml`

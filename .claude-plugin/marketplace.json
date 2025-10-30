@@ -23,6 +23,11 @@
       "name": "ci-cd",
       "source": "./ci-cd",
       "description": "CI/CD pipeline design, optimization, security, and troubleshooting"
+    },
+    {
+      "name": "monitoring-observability",
+      "source": "./monitoring-observability",
+      "description": "Monitoring and observability strategy, metrics/logs/traces systems, SLOs/error budgets, Prometheus/Grafana/Loki, OpenTelemetry, and tool comparison"
     }
   ]
 }
