@@ -27,7 +27,34 @@ Find unused resources, analyze Reserved Instance opportunities, detect cost anom
 - ⚡ Full integration with AWS APIs (EC2, RDS, EBS, S3, CloudWatch, Cost Explorer)
 
 ### ci-cd
-CI/CD pipeline design, optimization, security, and troubleshooting. Create workflows, optimize build performance, implement caching, secure pipelines, and debug issues across GitHub Actions, GitLab CI, and other platforms.
+**CI/CD pipeline design, optimization, security, and troubleshooting**
+
+Create workflows, optimize build performance, implement caching, secure pipelines, and debug issues across GitHub Actions, GitLab CI, and other platforms.
+
+### gitops-workflows
+**GitOps workflows with ArgoCD and Flux CD**
+
+Implement GitOps practices, deploy to multi-cluster environments, manage secrets securely, implement progressive delivery, and troubleshoot sync issues.
+
+**Features:**
+- 🚀 8 automated Python scripts (health checks for ArgoCD/Flux, repository validation, drift detection, secret auditing, ApplicationSet generation)
+- 📚 8 comprehensive reference guides (ArgoCD vs Flux comparison, repo patterns, secrets management, multi-cluster, progressive delivery, OCI artifacts, best practices, troubleshooting)
+- 📋 Production-ready templates (ArgoCD 3.x install, Flux bootstrap, ApplicationSets, SOPS+age config, Argo Rollouts canary, OCI artifacts)
+- ✨ Updated for ArgoCD 3.x and Flux 2.7 (2024-2025)
+- 🔐 Modern secrets management (SOPS+age, External Secrets Operator, Sealed Secrets)
+- 🌐 Multi-cluster deployment patterns with ApplicationSets
+
+### monitoring-observability
+**Monitoring and observability strategy and implementation**
+
+Design metrics systems, implement distributed tracing, create alerts and dashboards, calculate SLOs and error budgets, and choose the right monitoring tools for your needs.
+
+**Features:**
+- 📊 6 automated analysis scripts (analyze metrics, check alert quality, calculate SLOs, analyze logs, generate dashboards, validate health checks)
+- 📚 Comprehensive reference guides (metrics design, alerting best practices, logging, tracing, SLO/SLA, tool comparison)
+- 📋 Production-ready templates (Prometheus alerts for web apps and Kubernetes, OpenTelemetry collector config, incident runbooks)
+- 🎯 Four Golden Signals, RED/USE methods, OpenTelemetry integration
+- 🔍 Compare monitoring tools (Prometheus, Datadog, ELK, Loki, CloudWatch)
 
 ## Installation
 
@@ -42,11 +69,22 @@ Install skills:
 /plugin install k8s-troubleshooter@devops-skills
 /plugin install aws-cost-finops@devops-skills
 /plugin install ci-cd@devops-skills
+/plugin install gitops-workflows@devops-skills
+/plugin install monitoring-observability@devops-skills
 ```
 
 ## Usage
 
 Once installed, use these skills through Claude Code by describing what you need:
+
+**Monitoring & Observability:**
+- "Help me set up Prometheus monitoring for my web application"
+- "Create alerts for my service based on SLO best practices"
+- "Calculate my error budget consumption for 99.9% availability"
+- "Design a Grafana dashboard for my Kubernetes cluster"
+- "Should I use Prometheus or Datadog for my startup?"
+- "Implement OpenTelemetry distributed tracing in my Node.js app"
+- "Check the quality of my Prometheus alert rules"
 
 **AWS Cost Optimization:**
 - "Find unused AWS resources that are costing me money"
@@ -64,6 +102,15 @@ Once installed, use these skills through Claude Code by describing what you need
 - "This pod is in CrashLoopBackOff, help me diagnose it"
 - "Check the health of my Kubernetes cluster"
 - "Help me troubleshoot this deployment"
+
+**GitOps:**
+- "Set up ArgoCD for my Kubernetes cluster"
+- "Help me design a GitOps repository structure for multi-environment deployments"
+- "My ArgoCD application is OutOfSync, help me troubleshoot"
+- "Implement progressive delivery with canary deployments"
+- "How should I manage secrets in GitOps?"
+- "Set up multi-cluster deployment with Flux"
+- "Should I use ArgoCD or Flux for my platform?"
 
 ## Contributing
 
