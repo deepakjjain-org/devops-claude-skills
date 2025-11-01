@@ -41,6 +41,13 @@ devops-claude-skills/
 │   ├── scripts/
 │   ├── references/
 │   └── assets/
+├── gitops-workflows/            # Skill: GitOps with ArgoCD & Flux
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── SKILL.md                 # Main skill content (at root level)
+│   ├── scripts/                 # 8 automated analysis scripts
+│   ├── references/              # 8 comprehensive guides
+│   └── assets/                  # ArgoCD, Flux, secrets templates
 └── monitoring-observability/    # Skill: Monitoring & observability
     ├── .claude-plugin/
     │   └── plugin.json
@@ -132,6 +139,36 @@ Each skill includes Python scripts that follow a common pattern:
 
 **Workflow Pattern**: Task-based with security integration (Design → Optimize → Secure → Debug)
 
+### gitops-workflows
+**Purpose**: GitOps workflows with ArgoCD 3.x and Flux CD 2.7, multi-cluster management, and progressive delivery
+
+**Key Components**:
+- `SKILL.md`: Comprehensive GitOps workflows including ArgoCD/Flux setup, repository structure design, multi-cluster deployment, secrets management, progressive delivery, troubleshooting, and OCI artifacts
+- `references/argocd_vs_flux.md`: Detailed comparison with decision matrix, ArgoCD 3.x breaking changes (annotation-based tracking, fine-grained RBAC), Flux 2.7 features (OCI artifacts GA, image automation, source-watcher)
+- `references/repo_patterns.md`: Monorepo vs polyrepo patterns, app-of-apps, Kustomize vs Helm, environment promotion strategies
+- `references/secret_management.md`: SOPS+age (2025 preferred), External Secrets Operator v0.20+, Sealed Secrets, key rotation, git pre-commit hooks
+- `references/progressive_delivery.md`: Argo Rollouts canary/blue-green, Flagger integration, analysis with metrics providers
+- `references/multi_cluster.md`: ApplicationSets (Cluster/Matrix generators), hub-and-spoke architecture, workload identity, 83% performance improvement patterns
+- `references/oci_artifacts.md`: Flux v2.6+ OCI support, OCIRepository resource, cosign/notation signature verification, workload identity for AWS/GCP/Azure
+- `references/best_practices.md`: CNCF GitOps principles (OpenGitOps v1.0), ArgoCD 3.x resource exclusions, Flux 2.7 source-watcher, 2025 security trends
+- `references/troubleshooting.md`: ArgoCD OutOfSync/annotation tracking/sync failures, Flux GitRepository/Kustomization/HelmRelease/OCI issues, SOPS decryption, performance optimization
+- `scripts/check_argocd_health.py`: Diagnose ArgoCD application health, detect sync issues, check annotation vs label tracking (ArgoCD 3.x compatible)
+- `scripts/check_flux_health.py`: Diagnose Flux reconciliation issues across GitRepository, OCIRepository, Kustomization, HelmRelease, ImageUpdateAutomation
+- `scripts/validate_gitops_repo.py`: Validate repository structure, detect deprecated Kustomize syntax, check YAML validity, audit secrets management
+- `scripts/sync_drift_detector.py`: Detect configuration drift between Git and cluster for both ArgoCD and Flux
+- `scripts/secret_audit.py`: Audit secrets management practices, detect plain secrets in Git (HIGH severity), verify SOPS/age/ESO configuration
+- `scripts/applicationset_generator.py`: Generate ArgoCD ApplicationSet manifests (Cluster/List/Matrix generators) with goTemplate support
+- `scripts/promotion_validator.py`: Validate environment promotion workflows (dev → staging → production)
+- `scripts/oci_artifact_checker.py`: Validate Flux OCI artifacts, verify cosign/notation signatures
+- `assets/argocd/install-argocd-3.x.yaml`: ArgoCD 3.x installation with annotation-based tracking, resource exclusions, LoadBalancer/Ingress
+- `assets/applicationsets/cluster-generator.yaml`: ApplicationSet with Cluster generator, goTemplate, auto-sync
+- `assets/flux/flux-bootstrap-github.sh`: Flux 2.7 bootstrap script with source-watcher component
+- `assets/flux/oci-helmrelease.yaml`: OCIRepository + HelmRelease with semver and cosign verification
+- `assets/secrets/sops-age-config.yaml`: .sops.yaml with age encryption for multiple environments
+- `assets/progressive-delivery/argo-rollouts-canary.yaml`: Argo Rollouts canary with multi-step progression and Prometheus analysis
+
+**Workflow Pattern**: Decision-tree based (Tool selection → Setup → Repository structure → Multi-cluster/Secrets/Progressive delivery → Troubleshooting) with 8 core workflows
+
 ### monitoring-observability
 **Purpose**: Monitoring and observability strategy, implementation, and troubleshooting
 
@@ -218,6 +255,7 @@ Skills can be tested by:
    /plugin install k8s-troubleshooter@devops-skills
    /plugin install aws-cost-finops@devops-skills
    /plugin install ci-cd@devops-skills
+   /plugin install gitops-workflows@devops-skills
    /plugin install monitoring-observability@devops-skills
    ```
 
@@ -238,6 +276,16 @@ Skills can be tested by:
    python3 aws-cost-finops/scripts/spot_recommendations.py
    python3 aws-cost-finops/scripts/rightsizing_analyzer.py --days 30
    python3 aws-cost-finops/scripts/cost_anomaly_detector.py --days 30
+
+   # GitOps workflows scripts
+   python3 gitops-workflows/scripts/check_argocd_health.py --server argocd.example.com
+   python3 gitops-workflows/scripts/check_flux_health.py --namespace flux-system
+   python3 gitops-workflows/scripts/validate_gitops_repo.py /path/to/gitops-repo
+   python3 gitops-workflows/scripts/sync_drift_detector.py --tool argocd
+   python3 gitops-workflows/scripts/secret_audit.py /path/to/gitops-repo
+   python3 gitops-workflows/scripts/applicationset_generator.py cluster --name my-apps --repo-url https://github.com/org/repo
+   python3 gitops-workflows/scripts/promotion_validator.py --source dev --target staging
+   python3 gitops-workflows/scripts/oci_artifact_checker.py --name my-chart --namespace flux-system
 
    # Monitoring & observability scripts
    python3 monitoring-observability/scripts/slo_calculator.py --table
