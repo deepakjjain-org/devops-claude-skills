@@ -1,70 +1,19 @@
 ---
-name: aws-cost-finops
-description: AWS cost optimization and FinOps workflows. Use for finding unused resources, analyzing Reserved Instance opportunities, detecting cost anomalies, rightsizing instances, evaluating Spot instances, migrating to newer generation instances, implementing FinOps best practices, optimizing storage/network/database costs, and managing cloud financial operations. Includes automated analysis scripts and comprehensive reference documentation.
+name: aws-cost-optimization
+description: "AWS cost optimization and FinOps workflows. Use this skill whenever the user mentions AWS costs, cloud spending, FinOps, Reserved Instances, Savings Plans, or cost reduction. Triggers include finding unused resources, analyzing the AWS bill, rightsizing EC2 or RDS instances, evaluating Spot instances, detecting cost anomalies, migrating to Graviton or newer instance generations, implementing tagging for cost allocation, setting up AWS Budgets, conducting monthly cost reviews, comparing RI vs Savings Plans, and optimizing storage, network, or database costs."
 ---
 
 # AWS Cost Optimization & FinOps
 
 Systematic workflows for AWS cost optimization and financial operations management.
 
-## When to Use This Skill
-
-Use this skill when you need to:
-
-- **Find cost savings**: Identify unused resources, rightsizing opportunities, or commitment discounts
-- **Analyze spending**: Understand cost trends, detect anomalies, or break down costs
-- **Optimize architecture**: Choose cost-effective services, storage tiers, or instance types
-- **Implement FinOps**: Set up governance, tagging, budgets, or monthly reviews
-- **Make purchase decisions**: Evaluate Reserved Instances, Savings Plans, or Spot instances
-- **Troubleshoot costs**: Investigate unexpected bills or cost spikes
-- **Plan budgets**: Forecast costs or evaluate impact of new projects
-
 ## Cost Optimization Workflow
 
-Follow this systematic approach for AWS cost optimization:
-
-```
-┌─────────────────────────────────────────────┐
-│ 1. DISCOVER                                 │
-│    What are we spending money on?           │
-│    Run: find_unused_resources.py            │
-│    Run: cost_anomaly_detector.py            │
-└─────────────────────────────────────────────┘
-                    ↓
-┌─────────────────────────────────────────────┐
-│ 2. ANALYZE                                  │
-│    Where are the optimization opportunities?│
-│    Run: rightsizing_analyzer.py             │
-│    Run: detect_old_generations.py           │
-│    Run: spot_recommendations.py             │
-│    Run: analyze_ri_recommendations.py       │
-└─────────────────────────────────────────────┘
-                    ↓
-┌─────────────────────────────────────────────┐
-│ 3. PRIORITIZE                               │
-│    What should we optimize first?           │
-│    - Quick wins (low risk, high savings)    │
-│    - Low-hanging fruit (easy to implement)  │
-│    - Strategic improvements                 │
-└─────────────────────────────────────────────┘
-                    ↓
-┌─────────────────────────────────────────────┐
-│ 4. IMPLEMENT                                │
-│    Execute optimization actions             │
-│    - Delete unused resources                │
-│    - Rightsize instances                    │
-│    - Purchase commitments                   │
-│    - Migrate to new generations             │
-└─────────────────────────────────────────────┘
-                    ↓
-┌─────────────────────────────────────────────┐
-│ 5. MONITOR                                  │
-│    Verify savings and track metrics         │
-│    - Monthly cost reviews                   │
-│    - Tag compliance monitoring              │
-│    - Budget variance tracking               │
-└─────────────────────────────────────────────┘
-```
+1. **Discover** — Find waste: `find_unused_resources.py`, `cost_anomaly_detector.py`
+2. **Analyze** — Find opportunities: `rightsizing_analyzer.py`, `detect_old_generations.py`, `spot_recommendations.py`, `analyze_ri_recommendations.py`
+3. **Prioritize** — Quick wins (low risk, high savings) first, then low-hanging fruit, then strategic improvements
+4. **Implement** — Delete unused resources, rightsize instances, purchase commitments, migrate generations
+5. **Monitor** — Monthly cost reviews, tag compliance, budget variance tracking
 
 ---
 
@@ -332,56 +281,13 @@ aws ec2 request-spot-fleet --spot-fleet-request-config file://spot-fleet.json
 
 ---
 
-## Quick Reference: Cost Optimization Scripts
+## Quick Reference
 
-### All Scripts Location
-```bash
-ls scripts/
-# find_unused_resources.py
-# analyze_ri_recommendations.py
-# detect_old_generations.py
-# spot_recommendations.py
-# rightsizing_analyzer.py
-# cost_anomaly_detector.py
-```
+**Monthly review**: `find_unused_resources.py` + `cost_anomaly_detector.py --days 30` + `rightsizing_analyzer.py --days 30`
 
-### Script Usage Patterns
+**Quarterly optimization**: `analyze_ri_recommendations.py --days 60` + `detect_old_generations.py` + `spot_recommendations.py`
 
-**Monthly Review (Run all)**:
-```bash
-python3 scripts/find_unused_resources.py
-python3 scripts/cost_anomaly_detector.py --days 30
-python3 scripts/rightsizing_analyzer.py --days 30
-```
-
-**Quarterly Optimization**:
-```bash
-python3 scripts/analyze_ri_recommendations.py --days 60
-python3 scripts/detect_old_generations.py
-python3 scripts/spot_recommendations.py
-```
-
-**Specific Region Only**:
-```bash
-python3 scripts/find_unused_resources.py --region us-east-1
-python3 scripts/rightsizing_analyzer.py --region us-west-2
-```
-
-**Named AWS Profile**:
-```bash
-python3 scripts/find_unused_resources.py --profile production
-python3 scripts/cost_anomaly_detector.py --profile production --days 60
-```
-
-### Script Requirements
-```bash
-# Install dependencies
-pip install boto3 tabulate
-
-# AWS credentials required
-# Configure via: aws configure
-# Or use: --profile PROFILE_NAME
-```
+All scripts support `--region REGION` and `--profile PROFILE` flags. Install deps: `pip install boto3 tabulate`
 
 ---
 
@@ -444,27 +350,9 @@ Need help choosing between services?
 
 ## FinOps Governance & Process
 
-### Setting Up FinOps
+Three-phase rollout: (1) Foundation — Enable Cost Explorer, set up Budgets, define tagging strategy. (2) Visibility — Enforce tags, run optimization scripts, set up monthly reviews. (3) Culture — Cost metrics in engineering KPIs, architecture reviews, optimization sprints.
 
-**Phase 1: Foundation (Month 1)**
-- Enable Cost Explorer
-- Set up AWS Budgets
-- Define tagging strategy
-- Activate cost allocation tags
-
-**Phase 2: Visibility (Months 2-3)**
-- Implement tagging enforcement
-- Run optimization scripts
-- Set up monthly reviews
-- Create team cost reports
-
-**Phase 3: Culture (Ongoing)**
-- Cost metrics in engineering KPIs
-- Cost review in architecture decisions
-- Regular optimization sprints
-- FinOps champions in each team
-
-**Full Guide**: See `references/finops_governance.md`
+Full guide: `references/finops_governance.md`
 
 ### Monthly Review Process
 
@@ -576,33 +464,10 @@ Always verify with resource owner before deletion!
 
 ---
 
-## Best Practices Summary
-
-1. **Tag Everything**: Consistent tagging enables cost allocation and accountability
-2. **Monitor Continuously**: Weekly script runs catch waste early
-3. **Review Monthly**: Regular reviews prevent cost drift
-4. **Right-size Proactively**: Don't wait for cost issues to optimize
-5. **Use Commitments Wisely**: RIs/SPs for stable workloads only
-6. **Test Before Migrating**: Especially for Graviton or Spot
-7. **Automate Cleanup**: Scheduled shutdown of dev/test resources
-8. **Share Wins**: Celebrate cost savings to build FinOps culture
-
----
-
 ## Additional Resources
 
-**Detailed References**:
-- `references/best_practices.md`: Comprehensive optimization strategies
-- `references/service_alternatives.md`: Cost-effective service selection
-- `references/finops_governance.md`: Organizational FinOps practices
+**References**: `references/best_practices.md` | `references/service_alternatives.md` | `references/finops_governance.md`
 
-**Templates**:
-- `assets/templates/monthly_cost_report.md`: Monthly reporting template
+**Templates**: `assets/templates/monthly_cost_report.md`
 
-**Scripts**:
-- All scripts in `scripts/` directory with `--help` for usage
-
-**AWS Documentation**:
-- AWS Cost Explorer: https://aws.amazon.com/aws-cost-management/aws-cost-explorer/
-- AWS Budgets: https://aws.amazon.com/aws-cost-management/aws-budgets/
-- FinOps Foundation: https://www.finops.org
+**Scripts**: All scripts in `scripts/` support `--help`, `--region`, and `--profile` flags.

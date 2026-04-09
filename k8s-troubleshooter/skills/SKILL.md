@@ -1,22 +1,11 @@
 ---
 name: k8s-troubleshooter
-description: Systematic Kubernetes troubleshooting and incident response. Use when diagnosing pod failures, cluster issues, performance problems, networking issues, storage failures, or responding to production incidents. Provides diagnostic workflows, automated health checks, and comprehensive remediation guidance for common Kubernetes problems.
+description: "Systematic Kubernetes troubleshooting and incident response. Use this skill whenever the user mentions Kubernetes, K8s, kubectl, pods, containers, or clusters. Triggers include diagnosing CrashLoopBackOff, ImagePullBackOff, OOMKilled, or Pending pods, responding to production incidents, troubleshooting node NotReady or DiskPressure, debugging service connectivity or networking, investigating PVC or storage failures, analyzing performance degradation, checking cluster health, troubleshooting Helm releases, and conducting post-incident reviews."
 ---
 
 # Kubernetes Troubleshooter & Incident Response
 
 Systematic approach to diagnosing and resolving Kubernetes issues in production environments.
-
-## When to Use This Skill
-
-Use this skill when:
-- Investigating pod failures (CrashLoopBackOff, ImagePullBackOff, Pending, etc.)
-- Responding to production incidents or outages
-- Troubleshooting cluster health issues
-- Diagnosing networking or service connectivity problems
-- Investigating storage/volume issues
-- Analyzing performance degradation
-- Conducting post-incident analysis
 
 ## Core Troubleshooting Workflow
 
@@ -311,26 +300,3 @@ Read this when:
 - Debugging Helm release states
 - Managing chart dependencies
 
-## Best Practices
-
-**Always:**
-- Start with high-level health check before deep diving
-- Document symptoms and findings as you investigate
-- Check recent changes (deployments, config, infrastructure)
-- Preserve logs and state before making destructive changes
-- Test fixes in non-production when possible
-- Monitor after applying fixes to verify resolution
-
-**Never:**
-- Make production changes without understanding impact
-- Delete resources without confirming they're safe to remove
-- Restart pods repeatedly without investigating root cause
-- Apply fixes without documentation
-- Skip post-incident review
-
-**Key Principles:**
-- Systematic over random troubleshooting
-- Evidence-based diagnosis
-- Fix root cause, not symptoms
-- Learn and improve from each incident
-- Prevention is better than reaction

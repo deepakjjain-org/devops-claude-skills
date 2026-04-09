@@ -1,26 +1,9 @@
 ---
 name: monitoring-observability
-description: Monitoring and observability strategy, implementation, and troubleshooting. Use for designing metrics/logs/traces systems, setting up Prometheus/Grafana/Loki, creating alerts and dashboards, calculating SLOs and error budgets, analyzing performance issues, and comparing monitoring tools (Datadog, ELK, CloudWatch). Covers the Four Golden Signals, RED/USE methods, OpenTelemetry instrumentation, log aggregation patterns, and distributed tracing.
+description: "Monitoring and observability strategy, implementation, and troubleshooting. Use this skill whenever the user mentions monitoring, observability, metrics, logs, traces, alerting, SLOs, Prometheus, Grafana, Datadog, Loki, or OpenTelemetry. Triggers include designing metrics strategy (Four Golden Signals, RED/USE), setting up Prometheus/Grafana/Loki, creating alerts or dashboards, calculating SLOs and error budgets, instrumenting with OpenTelemetry, analyzing performance issues, choosing between monitoring tools, optimizing Datadog costs, migrating to open-source stack, and setting up distributed tracing."
 ---
 
 # Monitoring & Observability
-
-## Overview
-
-This skill provides comprehensive guidance for monitoring and observability workflows including metrics design, log aggregation, distributed tracing, alerting strategies, SLO/SLA management, and tool selection.
-
-**When to use this skill**:
-- Setting up monitoring for new services
-- Designing alerts and dashboards
-- Troubleshooting performance issues
-- Implementing SLO tracking and error budgets
-- Choosing between monitoring tools
-- Integrating OpenTelemetry instrumentation
-- Analyzing metrics, logs, and traces
-- Optimizing Datadog costs and finding waste
-- Migrating from Datadog to open-source stack
-
----
 
 ## Core Workflow: Observability Implementation
 
@@ -45,22 +28,9 @@ Are you setting up monitoring from scratch?
 
 ### Start with The Four Golden Signals
 
-Every service should monitor:
+Every service should monitor: **Latency** (p50/p95/p99), **Traffic** (req/s), **Errors** (failure rate), **Saturation** (resource utilization).
 
-1. **Latency**: Response time (p50, p95, p99)
-2. **Traffic**: Requests per second
-3. **Errors**: Failure rate
-4. **Saturation**: Resource utilization
-
-**For request-driven services**, use the **RED Method**:
-- **R**ate: Requests/sec
-- **E**rrors: Error rate
-- **D**uration: Response time
-
-**For infrastructure resources**, use the **USE Method**:
-- **U**tilization: % time busy
-- **S**aturation**: Queue depth
-- **E**rrors**: Error count
+**RED Method** (request-driven): Rate, Errors, Duration | **USE Method** (infrastructure): Utilization, Saturation, Errors
 
 **Quick Start - Web Application Example**:
 ```promql
@@ -78,15 +48,7 @@ histogram_quantile(0.95,
 )
 ```
 
-### Deep Dive: Metric Design
-
-For comprehensive metric design guidance including:
-- Metric types (counter, gauge, histogram, summary)
-- Cardinality best practices
-- Naming conventions
-- Dashboard design principles
-
-**→ Read**: [references/metrics_design.md](references/metrics_design.md)
+**Deep dive**: `references/metrics_design.md` — metric types, cardinality, naming conventions, dashboard design
 
 ### Automated Metric Analysis
 
@@ -115,12 +77,7 @@ python3 scripts/analyze_metrics.py cloudwatch \
 
 ### Structured Logging Checklist
 
-Every log entry should include:
-- ✅ Timestamp (ISO 8601 format)
-- ✅ Log level (DEBUG, INFO, WARN, ERROR, FATAL)
-- ✅ Message (human-readable)
-- ✅ Service name
-- ✅ Request ID (for tracing)
+Every log entry should include: timestamp (ISO 8601), log level, message, service name, request ID (for tracing).
 
 **Example structured log (JSON)**:
 ```json
@@ -136,23 +93,6 @@ Every log entry should include:
   "duration_ms": 5000
 }
 ```
-
-### Log Aggregation Patterns
-
-**ELK Stack** (Elasticsearch, Logstash, Kibana):
-- Best for: Deep log analysis, complex queries
-- Cost: High (infrastructure + operations)
-- Complexity: High
-
-**Grafana Loki**:
-- Best for: Cost-effective logging, Kubernetes
-- Cost: Low
-- Complexity: Medium
-
-**CloudWatch Logs**:
-- Best for: AWS-centric applications
-- Cost: Medium
-- Complexity: Low
 
 ### Log Analysis
 
@@ -171,16 +111,7 @@ python3 scripts/log_analyzer.py application.log --show-traces
 
 **→ Script**: [scripts/log_analyzer.py](scripts/log_analyzer.py)
 
-### Deep Dive: Logging
-
-For comprehensive logging guidance including:
-- Structured logging implementation examples (Python, Node.js, Go, Java)
-- Log aggregation patterns (ELK, Loki, CloudWatch, Fluentd)
-- Query patterns and best practices
-- PII redaction and security
-- Sampling and rate limiting
-
-**→ Read**: [references/logging_guide.md](references/logging_guide.md)
+**Deep dive**: `references/logging_guide.md` — structured logging, aggregation patterns (ELK, Loki, CloudWatch), PII redaction, sampling
 
 ---
 
@@ -188,10 +119,10 @@ For comprehensive logging guidance including:
 
 ### Alert Design Principles
 
-1. **Every alert must be actionable** - If you can't do something, don't alert
-2. **Alert on symptoms, not causes** - Alert on user experience, not components
-3. **Tie alerts to SLOs** - Connect to business impact
-4. **Reduce noise** - Only page for critical issues
+1. **Actionable** - If you can't act on it, don't alert
+2. **Symptom-based** - Alert on user experience, not components
+3. **SLO-tied** - Connect to business impact
+4. **Low noise** - Only page for critical issues
 
 ### Alert Severity Levels
 
@@ -235,12 +166,7 @@ python3 scripts/alert_quality_checker.py alerts.yml
 python3 scripts/alert_quality_checker.py /path/to/prometheus/rules/
 ```
 
-**Checks for**:
-- Alert naming conventions
-- Required labels (severity, team)
-- Required annotations (summary, description, runbook_url)
-- PromQL expression quality
-- 'for' clause to prevent flapping
+**Checks**: naming conventions, required labels/annotations, PromQL quality, 'for' clause to prevent flapping.
 
 **→ Script**: [scripts/alert_quality_checker.py](scripts/alert_quality_checker.py)
 
@@ -252,17 +178,7 @@ Production-ready alert rule templates:
 - [assets/templates/prometheus-alerts/webapp-alerts.yml](assets/templates/prometheus-alerts/webapp-alerts.yml) - Web application alerts
 - [assets/templates/prometheus-alerts/kubernetes-alerts.yml](assets/templates/prometheus-alerts/kubernetes-alerts.yml) - Kubernetes alerts
 
-### Deep Dive: Alerting
-
-For comprehensive alerting guidance including:
-- Alert design patterns (multi-window, rate of change, threshold with hysteresis)
-- Alert annotation best practices
-- Alert routing (severity-based, team-based, time-based)
-- Inhibition rules
-- Runbook structure
-- On-call best practices
-
-**→ Read**: [references/alerting_best_practices.md](references/alerting_best_practices.md)
+**Deep dive**: `references/alerting_best_practices.md` — alert design patterns, routing, inhibition rules, runbook structure, on-call practices
 
 ### Runbook Template
 
@@ -282,23 +198,7 @@ Create comprehensive runbooks for your alerts:
 4. **Limit panels**: 8-12 panels per dashboard maximum
 5. **Include context**: Show related metrics together
 
-### Recommended Dashboard Structure
-
-```
-┌─────────────────────────────────────┐
-│  Overall Health (Single Stats)      │
-│  [Requests/s] [Error%] [P95 Latency]│
-└─────────────────────────────────────┘
-┌─────────────────────────────────────┐
-│  Request Rate & Errors (Graphs)     │
-└─────────────────────────────────────┘
-┌─────────────────────────────────────┐
-│  Latency Distribution (Graphs)      │
-└─────────────────────────────────────┘
-┌─────────────────────────────────────┐
-│  Resource Usage (Graphs)            │
-└─────────────────────────────────────┘
-```
+**Recommended layout**: Overall Health (single stats) -> Request Rate & Errors -> Latency Distribution -> Resource Usage
 
 ### Generate Grafana Dashboards
 
@@ -325,10 +225,7 @@ python3 scripts/dashboard_generator.py database \
   --output db-dashboard.json
 ```
 
-**Supports**:
-- Web applications (requests, errors, latency, resources)
-- Kubernetes (pods, nodes, resources, network)
-- Databases (PostgreSQL, MySQL)
+**Supports**: Web applications, Kubernetes, Databases (PostgreSQL, MySQL).
 
 **→ Script**: [scripts/dashboard_generator.py](scripts/dashboard_generator.py)
 
@@ -338,14 +235,7 @@ python3 scripts/dashboard_generator.py database \
 
 ### SLO Fundamentals
 
-**SLI** (Service Level Indicator): Measurement of service quality
-- Example: Request latency, error rate, availability
-
-**SLO** (Service Level Objective): Target value for an SLI
-- Example: "99.9% of requests return in < 500ms"
-
-**Error Budget**: Allowed failure amount = (100% - SLO)
-- Example: 99.9% SLO = 0.1% error budget = 43.2 minutes/month
+SLI (measurement), SLO (target), Error Budget (allowed failure = 100% - SLO). See `references/slo_sla_guide.md` for full definitions.
 
 ### Common SLO Targets
 
@@ -381,17 +271,7 @@ python3 scripts/slo_calculator.py burn-rate \
 
 **→ Script**: [scripts/slo_calculator.py](scripts/slo_calculator.py)
 
-### Deep Dive: SLO/SLA
-
-For comprehensive SLO/SLA guidance including:
-- Choosing appropriate SLIs
-- Setting realistic SLO targets
-- Error budget policies
-- Burn rate alerting
-- SLA structure and contracts
-- Monthly reporting templates
-
-**→ Read**: [references/slo_sla_guide.md](references/slo_sla_guide.md)
+**Deep dive**: `references/slo_sla_guide.md` — choosing SLIs, setting targets, error budget policies, burn rate alerting, SLA contracts
 
 ---
 
@@ -451,39 +331,15 @@ class ErrorSampler(Sampler):
 
 ### OTel Collector Configuration
 
-Production-ready OpenTelemetry Collector configuration:
+**→ Template**: [assets/templates/otel-config/collector-config.yaml](assets/templates/otel-config/collector-config.yaml) — OTLP/Prometheus/host metrics receivers, batching, tail sampling, multiple exporters (Tempo, Jaeger, Loki, Prometheus, CloudWatch, Datadog)
 
-**→ Template**: [assets/templates/otel-config/collector-config.yaml](assets/templates/otel-config/collector-config.yaml)
-
-**Features**:
-- Receives OTLP, Prometheus, and host metrics
-- Batching and memory limiting
-- Tail sampling (error-based, latency-based, probabilistic)
-- Multiple exporters (Tempo, Jaeger, Loki, Prometheus, CloudWatch, Datadog)
-
-### Deep Dive: Tracing
-
-For comprehensive tracing guidance including:
-- OpenTelemetry instrumentation (Python, Node.js, Go, Java)
-- Span attributes and semantic conventions
-- Context propagation (W3C Trace Context)
-- Backend comparison (Jaeger, Tempo, X-Ray, Datadog APM)
-- Analysis patterns (finding slow traces, N+1 queries)
-- Integration with logs
-
-**→ Read**: [references/tracing_guide.md](references/tracing_guide.md)
+**Deep dive**: `references/tracing_guide.md` — OTel instrumentation (Python, Node.js, Go, Java), context propagation, backend comparison, analysis patterns
 
 ---
 
 ## 7. Datadog Cost Optimization & Migration
 
 ### Scenario 1: I'm Using Datadog and Costs Are Too High
-
-If your Datadog bill is growing out of control, start by identifying waste:
-
-#### Cost Analysis Script
-
-Automatically analyze your Datadog usage and find cost optimization opportunities:
 
 ```bash
 # Analyze Datadog usage (requires API key and APP key)
@@ -498,181 +354,41 @@ python3 scripts/datadog_cost_analyzer.py \
   --show-details
 ```
 
-**What it checks**:
-- Infrastructure host count and cost
-- Custom metrics usage and high-cardinality metrics
-- Log ingestion volume and trends
-- APM host usage
-- Unused or noisy monitors
-- Container vs VM optimization opportunities
-
 **→ Script**: [scripts/datadog_cost_analyzer.py](scripts/datadog_cost_analyzer.py)
 
 #### Common Cost Optimization Strategies
 
-**1. Custom Metrics Optimization** (typical savings: 20-40%):
-- Remove high-cardinality tags (user IDs, request IDs)
-- Delete unused custom metrics
-- Aggregate metrics before sending
-- Use metric prefixes to identify teams/services
-
-**2. Log Management** (typical savings: 30-50%):
-- Implement log sampling for high-volume services
-- Use exclusion filters for debug/trace logs in production
-- Archive cold logs to S3/GCS after 7 days
-- Set log retention policies (15 days instead of 30)
-
-**3. APM Optimization** (typical savings: 15-25%):
-- Reduce trace sampling rates (10% → 5% in prod)
-- Use head-based sampling instead of complete sampling
-- Remove APM from non-critical services
-- Use trace search with lower retention
-
-**4. Infrastructure Monitoring** (typical savings: 10-20%):
-- Switch from VM-based to container-based pricing where possible
-- Remove agents from ephemeral instances
-- Use Datadog's host reduction strategies
-- Consolidate staging environments
+- **Custom Metrics** (20-40% savings): Remove high-cardinality tags, delete unused metrics, aggregate before sending
+- **Log Management** (30-50% savings): Sample high-volume services, exclude debug logs in prod, archive to S3 after 7 days
+- **APM** (15-25% savings): Reduce trace sampling (10% to 5%), remove APM from non-critical services
+- **Infrastructure** (10-20% savings): Use container-based pricing, remove agents from ephemeral instances, consolidate staging
 
 ### Scenario 2: Migrating Away from Datadog
 
-If you're considering migrating to a more cost-effective open-source stack:
-
-#### Migration Overview
-
-**From Datadog** → **To Open Source Stack**:
-- Metrics: Datadog → **Prometheus + Grafana**
-- Logs: Datadog Logs → **Grafana Loki**
-- Traces: Datadog APM → **Tempo or Jaeger**
-- Dashboards: Datadog → **Grafana**
-- Alerts: Datadog Monitors → **Prometheus Alertmanager**
-
-**Estimated Cost Savings**: 60-77% ($49.8k-61.8k/year for 100-host environment)
+Migration to open-source stack (Prometheus + Grafana, Loki, Tempo/Jaeger, Alertmanager). Estimated savings: 60-77%.
 
 #### Migration Strategy
 
-**Phase 1: Run Parallel** (Month 1-2):
-- Deploy open-source stack alongside Datadog
-- Migrate metrics first (lowest risk)
-- Validate data accuracy
+- **Phase 1** (Month 1-2): Deploy open-source stack in parallel, migrate metrics first, validate accuracy
+- **Phase 2** (Month 2-3): Convert dashboards to Grafana, translate alert rules (DQL to PromQL), train team
+- **Phase 3** (Month 3-4): Set up Loki for logs, deploy Tempo/Jaeger for traces, update instrumentation
+- **Phase 4** (Month 4-5): Confirm all functionality migrated, decommission Datadog
 
-**Phase 2: Migrate Dashboards & Alerts** (Month 2-3):
-- Convert Datadog dashboards to Grafana
-- Translate alert rules (use DQL → PromQL guide below)
-- Train team on new tools
-
-**Phase 3: Migrate Logs & Traces** (Month 3-4):
-- Set up Loki for log aggregation
-- Deploy Tempo/Jaeger for tracing
-- Update application instrumentation
-
-**Phase 4: Decommission Datadog** (Month 4-5):
-- Confirm all functionality migrated
-- Cancel Datadog subscription
-
-#### Query Translation: DQL → PromQL
-
-When migrating dashboards and alerts, you'll need to translate Datadog queries to PromQL:
-
-**Quick examples**:
-```
-# Average CPU
-Datadog: avg:system.cpu.user{*}
-Prometheus: avg(node_cpu_seconds_total{mode="user"})
-
-# Request rate
-Datadog: sum:requests.count{*}.as_rate()
-Prometheus: sum(rate(http_requests_total[5m]))
-
-# P95 latency
-Datadog: p95:request.duration{*}
-Prometheus: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))
-
-# Error rate percentage
-Datadog: (sum:requests.errors{*}.as_rate() / sum:requests.count{*}.as_rate()) * 100
-Prometheus: (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) * 100
-```
-
-**→ Full Translation Guide**: [references/dql_promql_translation.md](references/dql_promql_translation.md)
-
-#### Cost Comparison
-
-**Example: 100-host infrastructure**
-
-| Component | Datadog (Annual) | Open Source (Annual) | Savings |
-|-----------|-----------------|---------------------|---------|
-| Infrastructure | $18,000 | $10,000 (self-hosted infra) | $8,000 |
-| Custom Metrics | $600 | Included | $600 |
-| Logs | $24,000 | $3,000 (storage) | $21,000 |
-| APM/Traces | $37,200 | $5,000 (storage) | $32,200 |
-| **Total** | **$79,800** | **$18,000** | **$61,800 (77%)** |
-
-### Deep Dive: Datadog Migration
-
-For comprehensive migration guidance including:
-- Detailed cost comparison and ROI calculations
-- Step-by-step migration instructions
-- Infrastructure sizing recommendations (CPU, RAM, storage)
-- Dashboard conversion tools and examples
-- Alert rule translation patterns
-- Application instrumentation changes (DogStatsD → Prometheus client)
-- Python scripts for exporting Datadog dashboards and monitors
-- Common challenges and solutions
-
-**→ Read**: [references/datadog_migration.md](references/datadog_migration.md)
+**Full migration guide**: `references/datadog_migration.md` | **Query translation**: `references/dql_promql_translation.md`
 
 ---
 
 ## 8. Tool Selection & Comparison
 
-### Decision Matrix
+| Solution | Monthly Cost (100 hosts) | Best For |
+|----------|-------------------------|----------|
+| Prometheus + Loki + Tempo | $1,500 | Kubernetes, budget-conscious, ops-capable teams |
+| Grafana Cloud | $3,000 | Open-source stack, low ops overhead |
+| Datadog | $8,000 | Ease of use, full observability out of the box |
+| ELK Stack | $4,000 | Heavy log analysis, powerful search |
+| CloudWatch | $2,000 | Single AWS provider, simple needs |
 
-**Choose Prometheus + Grafana if**:
-- ✅ Using Kubernetes
-- ✅ Want control and customization
-- ✅ Have ops capacity
-- ✅ Budget-conscious
-
-**Choose Datadog if**:
-- ✅ Want ease of use
-- ✅ Need full observability now
-- ✅ Budget allows ($8k+/month for 100 hosts)
-
-**Choose Grafana Stack (LGTM) if**:
-- ✅ Want open source full stack
-- ✅ Cost-effective solution
-- ✅ Cloud-native architecture
-
-**Choose ELK Stack if**:
-- ✅ Heavy log analysis needs
-- ✅ Need powerful search
-- ✅ Have dedicated ops team
-
-**Choose Cloud Native (CloudWatch/etc) if**:
-- ✅ Single cloud provider
-- ✅ Simple needs
-- ✅ Want minimal setup
-
-### Cost Comparison (100 hosts, 1TB logs/month)
-
-| Solution | Monthly Cost | Setup | Ops Burden |
-|----------|-------------|--------|------------|
-| Prometheus + Loki + Tempo | $1,500 | Medium | Medium |
-| Grafana Cloud | $3,000 | Low | Low |
-| Datadog | $8,000 | Low | None |
-| ELK Stack | $4,000 | High | High |
-| CloudWatch | $2,000 | Low | Low |
-
-### Deep Dive: Tool Comparison
-
-For comprehensive tool comparison including:
-- Metrics platforms (Prometheus, Datadog, New Relic, CloudWatch, Grafana Cloud)
-- Logging platforms (ELK, Loki, Splunk, CloudWatch Logs, Sumo Logic)
-- Tracing platforms (Jaeger, Tempo, Datadog APM, X-Ray)
-- Full-stack observability comparison
-- Recommendations by company size
-
-**→ Read**: [references/tool_comparison.md](references/tool_comparison.md)
+**Deep dive**: `references/tool_comparison.md` — full comparison of metrics, logging, tracing, and full-stack platforms
 
 ---
 
@@ -693,42 +409,17 @@ python3 scripts/health_check_validator.py \
   --verbose
 ```
 
-**Checks for**:
-- ✓ Returns 200 status code
-- ✓ Response time < 1 second
-- ✓ Returns JSON format
-- ✓ Contains 'status' field
-- ✓ Includes version/build info
-- ✓ Checks dependencies
-- ✓ Disables caching
+**Checks**: 200 status, response time < 1s, JSON format, 'status' field, version/build info, dependency checks, caching disabled.
 
 **→ Script**: [scripts/health_check_validator.py](scripts/health_check_validator.py)
 
 ### Common Troubleshooting Workflows
 
-**High Latency Investigation**:
-1. Check dashboards for latency spike
-2. Query traces for slow operations
-3. Check database slow query log
-4. Check external API response times
-5. Review recent deployments
-6. Check resource utilization (CPU, memory)
+**High Latency**: Check dashboards for spike -> query traces for slow ops -> check DB slow queries -> check external APIs -> review deployments -> check resource utilization
 
-**High Error Rate Investigation**:
-1. Check error logs for patterns
-2. Identify affected endpoints
-3. Check dependency health
-4. Review recent deployments
-5. Check resource limits
-6. Verify configuration
+**High Error Rate**: Check error logs -> identify affected endpoints -> check dependency health -> review deployments -> check resource limits -> verify configuration
 
-**Service Down Investigation**:
-1. Check if pods/instances are running
-2. Check health check endpoint
-3. Review recent deployments
-4. Check resource availability
-5. Check network connectivity
-6. Review logs for startup errors
+**Service Down**: Check pods/instances running -> check health endpoint -> review deployments -> check resource availability -> check network -> review startup logs
 
 ---
 
@@ -757,113 +448,15 @@ histogram_quantile(0.95,
 (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100
 ```
 
-### Kubernetes Commands
-
-```bash
-# Check pod status
-kubectl get pods -n <namespace>
-
-# View pod logs
-kubectl logs -f <pod-name> -n <namespace>
-
-# Check pod resources
-kubectl top pods -n <namespace>
-
-# Describe pod for events
-kubectl describe pod <pod-name> -n <namespace>
-
-# Check recent deployments
-kubectl rollout history deployment/<name> -n <namespace>
-```
-
-### Log Queries
-
-**Elasticsearch**:
-```json
-GET /logs-*/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        { "match": { "level": "error" } },
-        { "range": { "@timestamp": { "gte": "now-1h" } } }
-      ]
-    }
-  }
-}
-```
-
-**Loki (LogQL)**:
-```logql
-{job="app", level="error"} |= "error" | json
-```
-
-**CloudWatch Insights**:
-```
-fields @timestamp, level, message
-| filter level = "error"
-| filter @timestamp > ago(1h)
-```
+See `references/quick_commands.md` for Kubernetes, Elasticsearch, Loki, and CloudWatch query references.
 
 ---
 
 ## Resources Summary
 
-### Scripts (automation and analysis)
-- `analyze_metrics.py` - Detect anomalies in Prometheus/CloudWatch metrics
-- `alert_quality_checker.py` - Audit alert rules against best practices
-- `slo_calculator.py` - Calculate SLO compliance and error budgets
-- `log_analyzer.py` - Parse logs for errors and patterns
-- `dashboard_generator.py` - Generate Grafana dashboards from templates
-- `health_check_validator.py` - Validate health check endpoints
-- `datadog_cost_analyzer.py` - Analyze Datadog usage and find cost waste
+**Scripts**: `analyze_metrics.py` | `alert_quality_checker.py` | `slo_calculator.py` | `log_analyzer.py` | `dashboard_generator.py` | `health_check_validator.py` | `datadog_cost_analyzer.py`
 
-### References (deep-dive documentation)
-- `metrics_design.md` - Four Golden Signals, RED/USE methods, metric types
-- `alerting_best_practices.md` - Alert design, runbooks, on-call practices
-- `logging_guide.md` - Structured logging, aggregation patterns
-- `tracing_guide.md` - OpenTelemetry, distributed tracing
-- `slo_sla_guide.md` - SLI/SLO/SLA definitions, error budgets
-- `tool_comparison.md` - Comprehensive comparison of monitoring tools
-- `datadog_migration.md` - Complete guide for migrating from Datadog to OSS stack
-- `dql_promql_translation.md` - Datadog Query Language to PromQL translation reference
+**References**: `metrics_design.md` | `alerting_best_practices.md` | `logging_guide.md` | `tracing_guide.md` | `slo_sla_guide.md` | `tool_comparison.md` | `datadog_migration.md` | `dql_promql_translation.md`
 
-### Templates (ready-to-use configurations)
-- `prometheus-alerts/webapp-alerts.yml` - Production-ready web app alerts
-- `prometheus-alerts/kubernetes-alerts.yml` - Kubernetes monitoring alerts
-- `otel-config/collector-config.yaml` - OpenTelemetry Collector configuration
-- `runbooks/incident-runbook-template.md` - Incident response template
+**Templates**: `prometheus-alerts/webapp-alerts.yml` | `prometheus-alerts/kubernetes-alerts.yml` | `otel-config/collector-config.yaml` | `runbooks/incident-runbook-template.md`
 
----
-
-## Best Practices
-
-### Metrics
-- Start with Four Golden Signals
-- Use appropriate metric types (counter, gauge, histogram)
-- Keep cardinality low (avoid high-cardinality labels)
-- Follow naming conventions
-
-### Logging
-- Use structured logging (JSON)
-- Include request IDs for tracing
-- Set appropriate log levels
-- Redact PII before logging
-
-### Alerting
-- Make every alert actionable
-- Alert on symptoms, not causes
-- Use multi-window burn rate alerts
-- Include runbook links
-
-### Tracing
-- Sample appropriately (1-10% in production)
-- Always record errors
-- Use semantic conventions
-- Propagate context between services
-
-### SLOs
-- Start with current performance
-- Set realistic targets
-- Define error budget policies
-- Review and adjust quarterly
