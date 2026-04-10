@@ -204,7 +204,7 @@ When encountering errors:
 
 1. **Read the complete error message** - Don't skip details
 
-2. **Check common issues:** See `references/troubleshooting.md` for:
+2. **Consult `references/troubleshooting.md`** which covers:
    - State lock errors
    - State drift/corruption
    - Provider authentication failures
@@ -229,7 +229,7 @@ terraform apply -target=aws_instance.web
 
 5. **Common quick fixes:**
 
-**State locked:**
+**State locked** (full resolution guide: `references/troubleshooting.md` → State Lock Error):
 ```bash
 # Verify no one else running, then:
 terraform force-unlock <lock-id>

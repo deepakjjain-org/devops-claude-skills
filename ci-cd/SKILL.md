@@ -31,13 +31,12 @@ What are you building?
 # 6. Deploy (with approval gates)
 ```
 
-**Key principles:**
+**Key principles** (from `references/best_practices.md`):
 - Fail fast: Run cheap validation first
 - Parallelize: Remove unnecessary job dependencies
-- Cache dependencies: Use `actions/cache` or GitLab cache
+- Cache dependencies: Use `actions/cache` or GitLab cache (`references/optimization.md` for strategies)
 - Use artifacts: Build once, deploy many times
-
-See [best_practices.md](references/best_practices.md) for comprehensive pipeline design patterns.
+- Add security scanning early: See `references/devsecops.md` for SAST/DAST/SCA integration
 
 ### 2. Optimizing Pipeline Performance
 
@@ -55,7 +54,7 @@ See [best_practices.md](references/best_practices.md) for comprehensive pipeline
 python3 scripts/pipeline_analyzer.py --platform github --workflow .github/workflows/ci.yml
 ```
 
-**Common optimizations:**
+**Common optimizations** (detailed in `references/optimization.md`):
 - **Slow tests:** Shard tests with matrix builds
 - **Repeated dependency installs:** Add caching
 - **Sequential jobs:** Parallelize with proper `needs`
