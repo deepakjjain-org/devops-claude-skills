@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": false,
+      "evidence": "No .py diagnostic script is mentioned. The response does not reference check_argocd_health.py, validate_gitops_repo.py, applicationset_generator.py, or any other skill scripts."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable CLI commands included: 'helm repo add argo https://argoproj.github.io/argo-helm', 'helm install argocd argo/argo-cd ...', 'argocd login argocd.yourdomain.com --grpc-web', 'argocd cluster add dev-cluster-context ...', 'argocd cluster list', 'kubectl apply -f argocd/appprojects/', 'argocd app sync my-app-prod --preview-changes', 'argocd app diff my-app-prod', 'argocd app rollback my-app-prod <history-id>', and more."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "No references/*.md files are linked. The response does not point to argocd_vs_flux.md, repo_patterns.md, secret_management.md, or any other skill reference files."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows a comprehensive step-by-step workflow: Architecture Overview -> Step 1 (Install ArgoCD) -> Step 2 (Register Clusters) -> Step 3 (Git Repo Structure) -> Step 4 (Projects/RBAC) -> Step 5 (Application Definitions with Sync Policies) -> Step 6 (ApplicationSet) -> Step 7 (Notifications) -> Step 8 (Promotion Workflow) -> Step 9 (Secrets Management) -> Step 10 (Health Checks/Monitoring) -> Step 11 (Applying Everything). This is a decision-tree based setup workflow."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "The entire response is organized as 11 numbered steps from installation through monitoring. Each step contains detailed sub-steps. The Troubleshooting section provides a structured problem/cause/solution table. The Common Operations section provides specific command sequences for manual sync, rollback, and disabling auto-sync."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "timing": {
+    "total_tokens": 29605,
+    "duration_ms": 132209,
+    "total_duration_seconds": 132.2
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References 6 scripts: validate_gitops_repo.py (Phase 3), applicationset_generator.py (Phase 4), promotion_validator.py (Phase 6), secret_audit.py (Phase 7), check_argocd_health.py (Phase 8), sync_drift_detector.py (Phase 8). Also listed in Key References summary table."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Includes numerous CLI commands: 'kubectl apply -n argocd -f https://raw.githubusercontent.com/.../install.yaml', 'argocd cluster add dev-cluster-context --name dev-cluster --label environment=dev', 'argocd app list', 'argocd app diff prod-prod-cluster-frontend', 'sops -e secret.yaml > secret.enc.yaml', and many more."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "Explicitly lists multiple references: 'references/repo_patterns.md' (Phase 3), 'references/multi_cluster.md' (Phase 4), 'references/secret_management.md' (Phase 7), 'references/troubleshooting.md' (Phase 8), 'references/best_practices.md' (Key References table)."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows the skill's decision tree (Workflow 1: Initial Setup, Workflow 4: Multi-Cluster Deployments), uses hub-and-spoke pattern, and follows the recommended promotion workflow 'Dev (auto-sync) -> Staging (auto-sync) -> Production (manual approval)'."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Organized as 8 numbered phases: Install -> Register Clusters -> Repo Structure -> ApplicationSets -> RBAC -> Promotion -> Secrets -> Health Monitoring, plus a comprehensive summary checklist of 13 steps."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 48576,
+    "duration_ms": 127293,
+    "total_duration_seconds": 127.3
+  }
+}

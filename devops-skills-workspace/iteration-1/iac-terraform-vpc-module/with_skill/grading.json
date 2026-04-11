@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References both 'init_module.py' (line 18: 'python3 scripts/init_module.py vpc --path ./modules') and 'validate_module.py' (line 735: 'python3 scripts/validate_module.py modules/vpc')"
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable commands including 'python3 scripts/init_module.py vpc --path ./modules', 'python3 scripts/validate_module.py modules/vpc', 'terraform init', 'terraform fmt -recursive', 'terraform validate', 'terraform plan -out=tfplan', 'terraform apply tfplan', and 'terraform-docs markdown modules/vpc > modules/vpc/README.md'"
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "Explicitly references 'references/cost_optimization.md' in Step 6 (line 750: \"Following the skill's cost optimization reference (references/cost_optimization.md)\")"
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Opens with the skill's decision tree ('Is this reusable across environments/projects? Yes'), then follows structured workflow: Scaffold -> Implement -> Environment Configs -> CIDR Allocation -> Validate -> Cost Optimization -> Deploy -> Next Steps"
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Eight clearly numbered steps: Step 1 (Scaffold), Step 2 (Implementation), Step 3 (Environment Configurations), Step 4 (CIDR Allocation), Step 5 (Validate), Step 6 (Cost Optimization), Step 7 (Deployment Workflow), Step 8 (Next Steps)"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 54657,
+    "duration_ms": 112015,
+    "total_duration_seconds": 112.0
+  }
+}

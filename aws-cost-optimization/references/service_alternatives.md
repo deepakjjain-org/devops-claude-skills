@@ -61,7 +61,7 @@ Batch processing → Fargate Spot or EC2 Spot
   - t2 → t3 (10% cheaper, better performance)
   - m4 → m5 → m6i (progressive improvements)
   - c4 → c5 → c6i (better price/performance)
-- **Action**: Check `detect_old_generations.py` script
+- **Action**: Run `aws ec2 describe-instances` and filter for t2, m4, c4, r4 families
 
 **On-Demand vs Spot vs Reserved**
 - **On-Demand**: $X/hour, highest cost, full flexibility

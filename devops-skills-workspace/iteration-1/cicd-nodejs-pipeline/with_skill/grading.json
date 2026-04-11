@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References 'python3 scripts/pipeline_analyzer.py --platform github --workflow .github/workflows/ci.yml' in Part 1 and 'python3 scripts/ci_health.py --platform github --repo your-org/your-repo --limit 20' in Part 10."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Includes numerous runnable commands: 'npm ci', 'npx turbo run build --filter=[HEAD^1]', 'npx playwright test --shard=...', 'npx jest --shard=...', 'docker push ghcr.io/...', and complete GitHub Actions workflow YAML with inline commands."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "References the skill's design philosophy ('Fail Fast -> Parallelize -> Cache -> Secure -> Deploy') and DevSecOps best practices but does not explicitly cite references/best_practices.md, references/security.md, references/optimization.md, or references/devsecops.md by filename."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows the CI/CD skill's core workflow: 'Fail Fast -> Parallelize -> Cache -> Secure -> Deploy', with 10 structured parts covering diagnosis, optimization, security, and deployment."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Organized as 10 numbered parts with a 4-week implementation plan (Foundation -> Test Optimization -> Security Integration -> Deployment & Hardening), plus tables comparing before/after timing."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_tokens": 80709,
+    "duration_ms": 160346,
+    "total_duration_seconds": 160.3
+  }
+}

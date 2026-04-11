@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References 6 scripts by filename: slo_calculator.py (Section 3), alert_quality_checker.py (Section 4), dashboard_generator.py (Section 7), health_check_validator.py (Section 8), analyze_metrics.py and log_analyzer.py (Section 11 table)."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable CLI commands provided, e.g.: 'python3 monitoring-observability/scripts/slo_calculator.py --table', 'python3 monitoring-observability/scripts/dashboard_generator.py webapp --title \"Payment Service\" --service payment-service --output dashboards/payment-service.json', 'python3 monitoring-observability/scripts/alert_quality_checker.py /path/to/alert-rules/', 'python3 monitoring-observability/scripts/health_check_validator.py https://service.internal/healthz https://service.internal/ready --verbose'."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "Section 12 'Key Reference Documents' explicitly lists 6 reference files: metrics_design.md, alerting_best_practices.md, logging_guide.md, tracing_guide.md, slo_sla_guide.md, and tool_comparison.md, all under the references/ directory."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Response is organized into 12 numbered sections following a systematic approach: Tool Selection (1) -> Metrics Strategy (2) -> SLOs (3) -> Alerting (4) -> Log Aggregation (5) -> Distributed Tracing (6) -> Dashboards (7) -> Health Checks (8) -> On-Call/Incident Response (9) -> Implementation Roadmap (10) -> Scripts (11) -> References (12). This mirrors the monitoring-observability skill's decision-tree workflow pattern (Setup from scratch -> tool selection -> metrics -> alerting -> SLOs)."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Section 10 provides a detailed 4-week implementation roadmap with phased steps: Week 1 (Foundation: deploy kube-prometheus-stack, Loki, Tempo, OTel Collector, PagerDuty), Week 2 (Application Instrumentation: structured logging, Prometheus metrics, OTel auto-instrumentation, health checks), Week 3 (Dashboards, Alerts, SLOs), Week 4 (Validation and Hardening). Each week contains 4-8 numbered checkbox items."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 83214,
+    "duration_ms": 188484,
+    "total_duration_seconds": 188.5
+  }
+}

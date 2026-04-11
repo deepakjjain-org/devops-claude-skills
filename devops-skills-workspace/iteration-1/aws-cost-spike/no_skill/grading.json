@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": false,
+      "evidence": "No .py diagnostic script is mentioned. The response does not reference cost_anomaly_detector.py, find_unused_resources.py, rightsizing_analyzer.py, or any other skill scripts. All analysis is done via AWS CLI commands."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Extensive AWS CLI commands throughout all phases: 'aws ce get-cost-and-usage ...', 'aws ec2 describe-reserved-instances ...', 'aws ec2 describe-instances ...', 'aws rds describe-db-instances ...', 'aws cloudtrail lookup-events ...', 'aws budgets create-budget ...', and many more."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "No references/*.md files are linked. The response does not point to best_practices.md, service_alternatives.md, or finops_governance.md."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows a systematic phased approach: Phase 1 (Immediate Triage) -> Phase 2 (Most Likely Culprits) -> Phase 3 (Deeper Analysis) -> Phase 4 (Root Causes Checklist) -> Phase 5 (Immediate Cost Reduction) -> Phase 6 (CFO Response Template) -> Phase 7 (Prevention). This mirrors the Discover -> Analyze -> Prioritize -> Implement -> Monitor pattern."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Organized as 7 numbered phases with numbered sub-steps within each. Phase 5 provides specific remediation actions organized by root cause. Phase 7 provides numbered prevention steps including budget alerts and monthly review processes."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "timing": {
+    "total_tokens": 26515,
+    "duration_ms": 97509,
+    "total_duration_seconds": 97.5
+  }
+}

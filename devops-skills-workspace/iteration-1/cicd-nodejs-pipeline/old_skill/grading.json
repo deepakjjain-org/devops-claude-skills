@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References 'python3 scripts/pipeline_analyzer.py --platform github --workflow .github/workflows/ci.yml' in Step 1 and 'python3 scripts/ci_health.py --platform github --repo your-org/your-repo --limit 20' in Step 8."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Includes numerous runnable commands: 'npm ci', 'npx turbo run build --filter=[HEAD^1]', 'npm install turbo --save-dev', 'npx jest --shard=1/4 --ci --coverage', 'npx playwright test --shard=...', 'npx nx affected --target=build --base=origin/main', and more."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "Does not explicitly cite references/best_practices.md, references/security.md, references/optimization.md, references/devsecops.md, or references/troubleshooting.md by filename. Mentions concepts like 'shift-left' and 'DevSecOps' generically."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows a structured approach: Design -> Optimize -> Secure -> Deploy, organized as 8 sequential steps with a fail-fast pipeline architecture diagram."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Organized as 8 numbered steps with detailed optimization tables (Quick Wins, Medium Impact, Advanced), security scanning breakdown, and monitoring checklist."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_tokens": 73976,
+    "duration_ms": 149422,
+    "total_duration_seconds": 149.4
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References cluster_health.py ('python3 scripts/cluster_health.py' in Phase 2), check_namespace.py ('python3 scripts/check_namespace.py <your-namespace>' in Phase 2), and diagnose_pod.py ('python3 scripts/diagnose_pod.py <namespace> <api-pod-name>' in Phase 3 and Phase 6)"
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable kubectl commands including 'kubectl describe pod <api-pod-name> -n <namespace>', 'kubectl logs <api-pod-name> -n <namespace> --previous', 'kubectl rollout undo deployment/<api-deployment> -n <namespace>', 'kubectl exec -it <postgres-pod-name> -n <namespace> -- pg_isready', and many more"
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "Explicitly references common_issues.md by name: 'Based on the CrashLoopBackOff reference (common_issues.md), the connection refused to postgres after a new deployment points to one of these likely root causes' in Phase 4"
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows the exact 6-phase k8s-troubleshooter workflow: Phase 1 Gather Context, Phase 2 Initial Triage, Phase 3 Deep Dive Investigation, Phase 4 Identify Root Cause, Phase 5 Remediation, Phase 6 Verify and Monitor"
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Phase 5 provides structured remediation with an immediate rollback step followed by root-cause-specific fixes (connection string, no endpoints, postgres down, network policy, liveness probe), each with specific commands. Also includes init container recommendation and 7 numbered prevention items"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 49257,
+    "duration_ms": 88864,
+    "total_duration_seconds": 88.9
+  }
+}

@@ -103,7 +103,9 @@ See [security.md](references/security.md) for comprehensive security patterns, s
 
 **Step 1: Check pipeline health**
 ```bash
-python3 scripts/ci_health.py --platform github --repo owner/repo
+gh run list --limit 20    # Recent runs with status (success/failure rates)
+gh run view <run-id>      # Detailed run info and failure logs
+gh workflow list           # All configured workflows
 ```
 
 **Step 2: Identify the failure type**
@@ -399,7 +401,8 @@ deploy:
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | `pipeline_analyzer.py` | Find optimization opportunities (caching, parallelization, outdated actions) | `python3 scripts/pipeline_analyzer.py --platform github --workflow <path>` |
-| `ci_health.py` | Pipeline success/failure rates and failure patterns | `python3 scripts/ci_health.py --platform github --repo owner/repo --limit 20` |
+
+For pipeline health checks (success/failure rates, failure patterns), use `gh` CLI: `gh run list --limit 20`, `gh run view <run-id>`, `gh workflow list`.
 
 ## Reference Documentation
 

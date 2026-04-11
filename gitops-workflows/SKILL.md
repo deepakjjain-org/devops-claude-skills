@@ -70,13 +70,15 @@ argocd app sync guestbook
 ### Health Check
 
 ```bash
-# Check application health
-python3 scripts/check_argocd_health.py \
-  --server https://argocd.example.com \
-  --token $ARGOCD_TOKEN
-```
+# List all applications and their sync/health status
+argocd app list
 
-**→ Script**: [scripts/check_argocd_health.py](scripts/check_argocd_health.py)
+# Get detailed status for a specific application
+argocd app get <app-name>
+
+# Check applications via kubectl (no ArgoCD CLI needed)
+kubectl get applications.argoproj.io -A
+```
 
 ---
 
@@ -150,11 +152,15 @@ spec:
 ### Health Check
 
 ```bash
-# Check Flux health
-python3 scripts/check_flux_health.py --namespace flux-system
-```
+# Check all Flux resources across namespaces
+flux get all -A
 
-**→ Script**: [scripts/check_flux_health.py](scripts/check_flux_health.py)
+# Check Git sources
+flux get sources git
+
+# Check kustomization status
+flux get kustomizations
+```
 
 ---
 
@@ -396,7 +402,8 @@ argocd app diff my-app
 argocd app sync my-app
 
 # Check health
-python3 scripts/check_argocd_health.py --server https://argocd.example.com --token $TOKEN
+argocd app list
+argocd app get my-app
 ```
 
 **Flux Not Reconciling**:
@@ -415,21 +422,17 @@ flux reconcile kustomization my-app
 **Detect Drift**:
 ```bash
 # ArgoCD drift detection
-python3 scripts/sync_drift_detector.py --argocd --app my-app
+argocd app diff my-app
 
-# Flux drift detection
-python3 scripts/sync_drift_detector.py --flux
+# Kubernetes manifest drift detection
+kubectl diff -f <manifest.yaml>
 ```
-
-**→ Script**: [scripts/sync_drift_detector.py](scripts/sync_drift_detector.py)
 
 **→ Reference**: [references/troubleshooting.md](references/troubleshooting.md)
 
 ---
 
-## 8. OCI Artifacts (Flux 2.6+)
-
-**GA Status**: Flux v2.6 (June 2025)
+## 8. OCI Artifacts (Flux 2.6+, GA June 2025)
 
 ### Use OCIRepository for Helm Charts
 
@@ -452,16 +455,14 @@ spec:
 ### Verify OCI Artifacts
 
 ```bash
-python3 scripts/oci_artifact_checker.py \
-  --verify ghcr.io/org/app:v1.0.0 \
-  --provider cosign
+# Check OCI sources managed by Flux
+flux get sources oci
+
+# Get detailed OCI repository status via kubectl
+kubectl get ocirepository -A -o json
 ```
 
-**→ Script**: [scripts/oci_artifact_checker.py](scripts/oci_artifact_checker.py)
-
 **→ Reference**: [references/oci_artifacts.md](references/oci_artifacts.md)
-
----
 
 ## Quick Reference Commands
 
@@ -487,11 +488,9 @@ flux resume kustomization <name>              # Resume
 flux export source git --all > sources.yaml   # Export resources
 ```
 
----
-
 ## Resources Summary
 
-**Scripts**: `check_argocd_health.py` | `check_flux_health.py` | `validate_gitops_repo.py` | `sync_drift_detector.py` | `secret_audit.py` | `applicationset_generator.py` | `promotion_validator.py` | `oci_artifact_checker.py`
+**Scripts**: `applicationset_generator.py` | `secret_audit.py` | `validate_gitops_repo.py`
 
 **References**: `argocd_vs_flux.md` | `repo_patterns.md` | `secret_management.md` | `progressive_delivery.md` | `multi_cluster.md` | `troubleshooting.md` | `best_practices.md` | `oci_artifacts.md`
 

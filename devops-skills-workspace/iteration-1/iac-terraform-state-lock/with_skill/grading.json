@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "Mentions 'inspect_state.py' on line 79: 'python3 scripts/inspect_state.py /path/to/your/terraform/directory --check-drift'"
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable commands including 'terraform force-unlock abc-123', 'aws dynamodb get-item ...', 'terraform apply', 'terraform state list', and 'export TF_LOG=DEBUG'"
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "Mentions 'troubleshooting guide' and 'best practices' in passing but does not explicitly reference a references/*.md file path (e.g., references/troubleshooting.md or references/best_practices.md)"
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Structured with Diagnosis section identifying the issue type, followed by systematic Step-by-Step Resolution (Steps 1-5), and a Prevention section — aligns with the skill's triage-based workflow pattern"
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Five clearly numbered steps: Step 1 (Confirm No One Else Is Running), Step 2 (Inspect Lock in DynamoDB), Step 3 (Force Unlock), Step 4 (Retry Operation), Step 5 (Verify State Health)"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_tokens": 36160,
+    "duration_ms": 59462,
+    "total_duration_seconds": 59.5
+  }
+}

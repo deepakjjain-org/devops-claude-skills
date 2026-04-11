@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References 6 scripts: validate_gitops_repo.py (Step 3), applicationset_generator.py (Step 5), promotion_validator.py (Step 6), secret_audit.py (Step 7), check_argocd_health.py (Step 8), sync_drift_detector.py (Step 8). Also listed in Troubleshooting Quick Reference table."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Includes numerous CLI commands: 'kubectl apply -n argocd -f https://raw.githubusercontent.com/.../install.yaml', 'argocd cluster add dev-cluster-context --name dev --label environment=dev', 'argocd app sync prod-frontend', 'argocd app diff prod-frontend', 'kubectl port-forward svc/argocd-server', and many more."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "References 'references/progressive_delivery.md' in the Next Steps section for canary deployments guidance."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Explicitly references 'Workflow 1 (ArgoCD Initial Setup) and Workflow 4 (Multi-Cluster Deployments)' from the skill, follows the decision tree, and uses the hub-and-spoke architecture pattern."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Organized as 9 numbered steps plus a troubleshooting quick reference table and next steps: Install -> Register Clusters -> Repo Structure -> RBAC -> ApplicationSets -> Promotion -> Secrets -> Monitoring -> Apply."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 45793,
+    "duration_ms": 143002,
+    "total_duration_seconds": 143.0
+  }
+}

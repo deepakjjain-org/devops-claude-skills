@@ -9,8 +9,8 @@ Systematic workflows for AWS cost optimization and financial operations manageme
 
 ## Cost Optimization Workflow
 
-1. **Discover** — Find waste: `find_unused_resources.py`, `cost_anomaly_detector.py`
-2. **Analyze** — Find opportunities: `rightsizing_analyzer.py`, `detect_old_generations.py`, `spot_recommendations.py`, `analyze_ri_recommendations.py`
+1. **Discover** — Find waste using `aws ec2` and `aws ce` CLI commands to identify unused resources and cost anomalies
+2. **Analyze** — Find opportunities with `aws compute-optimizer`, `aws cloudwatch`, and `aws ce` for rightsizing, generation upgrades, Spot, and RI recommendations
 3. **Prioritize** — Quick wins (low risk, high savings) first, then low-hanging fruit, then strategic improvements
 4. **Implement** — Delete unused resources, rightsize instances, purchase commitments, migrate generations
 5. **Monitor** — Monthly cost reviews, tag compliance, budget variance tracking
@@ -25,41 +25,62 @@ Systematic workflows for AWS cost optimization and financial operations manageme
 
 **Step 1: Find Unused Resources**
 ```bash
-# Scan for waste across all resources
-python3 scripts/find_unused_resources.py
+# Find unattached EBS volumes
+aws ec2 describe-volumes --filters Name=status,Values=available \
+  --query 'Volumes[].{ID:VolumeId,Size:Size,Created:CreateTime}' --output table
 
-# Expected output:
-# - Unattached EBS volumes
-# - Old snapshots
-# - Unused Elastic IPs
-# - Idle NAT Gateways
-# - Idle EC2 instances
-# - Unused load balancers
-# - Estimated monthly savings
+# Find unused Elastic IPs
+aws ec2 describe-addresses --filters Name=domain,Values=vpc \
+  --query 'Addresses[?AssociationId==null].{IP:PublicIp,AllocationId:AllocationId}' --output table
+
+# Find idle EC2 instances (low CPU over 14 days)
+aws cloudwatch get-metric-statistics --namespace AWS/EC2 \
+  --metric-name CPUUtilization --period 86400 --statistics Average \
+  --start-time $(date -u -v-14d +%Y-%m-%dT%H:%M:%S) --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+  --dimensions Name=InstanceId,Value=INSTANCE_ID
+
+# Find old snapshots (>90 days)
+aws ec2 describe-snapshots --owner-ids self \
+  --query 'Snapshots[?StartTime<=`2025-01-01`].{ID:SnapshotId,Size:VolumeSize,Date:StartTime}' --output table
+
+# Find unused load balancers (no healthy targets)
+aws elbv2 describe-target-health --target-group-arn TARGET_GROUP_ARN
 ```
 
 **Step 2: Analyze Cost Anomalies**
 ```bash
-# Detect unusual spending patterns
-python3 scripts/cost_anomaly_detector.py --days 30
+# Get daily costs for the past 30 days
+aws ce get-cost-and-usage \
+  --time-period Start=$(date -u -v-30d +%Y-%m-%d),End=$(date -u +%Y-%m-%d) \
+  --granularity DAILY --metrics BlendedCost \
+  --group-by Type=DIMENSION,Key=SERVICE
 
-# Expected output:
-# - Cost spikes and anomalies
-# - Top cost drivers
-# - Period-over-period comparison
-# - 30-day forecast
+# Get cost forecast for the next 30 days
+aws ce get-cost-forecast \
+  --time-period Start=$(date -u +%Y-%m-%d),End=$(date -u -v+30d +%Y-%m-%d) \
+  --granularity MONTHLY --metric BLENDED_COST
+
+# Compare month-over-month costs
+aws ce get-cost-and-usage \
+  --time-period Start=$(date -u -v-60d +%Y-%m-01),End=$(date -u +%Y-%m-%d) \
+  --granularity MONTHLY --metrics BlendedCost
 ```
 
 **Step 3: Identify Rightsizing Opportunities**
 ```bash
-# Find oversized instances
-python3 scripts/rightsizing_analyzer.py --days 30
+# Get Compute Optimizer rightsizing recommendations
+aws compute-optimizer get-ec2-instance-recommendations \
+  --query 'instanceRecommendations[].{Instance:instanceArn,Finding:finding,Current:currentInstanceType,Recommended:recommendationOptions[0].instanceType}'
 
-# Expected output:
-# - EC2 instances with low utilization
-# - RDS instances with low utilization
-# - Recommended smaller instance types
-# - Estimated savings
+# Check CPU utilization for a specific instance (past 30 days)
+aws cloudwatch get-metric-statistics --namespace AWS/EC2 \
+  --metric-name CPUUtilization --period 3600 --statistics Average Maximum \
+  --start-time $(date -u -v-30d +%Y-%m-%dT%H:%M:%S) --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+  --dimensions Name=InstanceId,Value=INSTANCE_ID
+
+# Get RDS rightsizing recommendations
+aws compute-optimizer get-ecs-service-recommendations 2>/dev/null || \
+  echo "Check RDS CPU/memory in CloudWatch manually"
 ```
 
 **Step 4: Generate Monthly Report**
@@ -68,7 +89,7 @@ python3 scripts/rightsizing_analyzer.py --days 30
 cp assets/templates/monthly_cost_report.md reports/$(date +%Y-%m)-cost-report.md
 
 # Fill in:
-# - Findings from scripts
+# - Findings from AWS CLI analysis
 # - Action items
 # - Team cost breakdowns
 # - Optimization wins
@@ -87,13 +108,18 @@ cp assets/templates/monthly_cost_report.md reports/$(date +%Y-%m)-cost-report.md
 
 **Step 1: Analyze Current Usage**
 ```bash
-# Identify workloads suitable for commitments
-python3 scripts/analyze_ri_recommendations.py --days 60
+# Get EC2 RI purchase recommendations
+aws ce get-reservation-purchase-recommendation --service "Amazon Elastic Compute Cloud - Compute" \
+  --lookback-period-in-days SIXTY_DAYS --term-in-years ONE_YEAR --payment-option NO_UPFRONT
 
-# Looks for:
-# - EC2 instances running consistently for 60+ days
-# - RDS instances with stable usage
-# - Calculates ROI for 1yr vs 3yr commitments
+# Get RDS RI purchase recommendations
+aws ce get-reservation-purchase-recommendation --service "Amazon Relational Database Service" \
+  --lookback-period-in-days SIXTY_DAYS --term-in-years ONE_YEAR --payment-option NO_UPFRONT
+
+# Get Savings Plans recommendations
+aws ce get-savings-plans-purchase-recommendation \
+  --savings-plans-type COMPUTE_SP --lookback-period-in-days SIXTY_DAYS \
+  --term-in-years ONE_YEAR --payment-option NO_UPFRONT
 ```
 
 **Step 2: Review Recommendations**
@@ -149,13 +175,16 @@ Maximum flexibility → Compute Savings Plan
 
 **Step 1: Detect Old Instances**
 ```bash
-# Find outdated instance generations
-python3 scripts/detect_old_generations.py
+# Find old-generation instances (t2, m4, c4, r4, etc.)
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running \
+  --query 'Reservations[].Instances[?starts_with(InstanceType, `t2.`) || starts_with(InstanceType, `m4.`) || starts_with(InstanceType, `c4.`) || starts_with(InstanceType, `r4.`)].{ID:InstanceId,Type:InstanceType,Name:Tags[?Key==`Name`]|[0].Value}' \
+  --output table
 
-# Identifies:
-# - t2 → t3 migrations (10% savings)
-# - m4 → m5 → m6i migrations
-# - Intel → Graviton opportunities (20% savings)
+# Find all running instance types to review generations
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running \
+  --query 'Reservations[].Instances[].{ID:InstanceId,Type:InstanceType,Name:Tags[?Key==`Name`]|[0].Value}' \
+  --output table
+# Look for: t2→t3, m4→m6i, c4→c6i, r4→r6i, Intel→Graviton (20% savings)
 ```
 
 **Step 2: Prioritize Migrations**
@@ -205,15 +234,21 @@ x86 → Graviton (ARM64): 20% savings
 
 **Step 1: Identify Candidates**
 ```bash
-# Analyze workloads for Spot suitability
-python3 scripts/spot_recommendations.py
+# Check current Spot pricing vs On-Demand for target instance types
+aws ec2 describe-spot-price-history --instance-types m5.large m5.xlarge m6i.large \
+  --product-descriptions "Linux/UNIX" --start-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+  --query 'SpotPriceHistory[].{Type:InstanceType,AZ:AvailabilityZone,Price:SpotPrice}' --output table
 
-# Evaluates:
-# - Instances in Auto Scaling Groups (good candidates)
-# - Dev/test/staging environments
-# - Batch processing workloads
-# - CI/CD and build servers
+# List Auto Scaling Groups (good Spot candidates)
+aws autoscaling describe-auto-scaling-groups \
+  --query 'AutoScalingGroups[].{Name:AutoScalingGroupName,Min:MinSize,Max:MaxSize,Desired:DesiredCapacity}' --output table
+
+# Check which ASGs already use mixed instances (Spot)
+aws autoscaling describe-auto-scaling-groups \
+  --query 'AutoScalingGroups[?MixedInstancesPolicy!=null].AutoScalingGroupName'
 ```
+
+**Spot candidates**: instances in ASGs, dev/test/staging environments, batch processing, CI/CD servers.
 
 **Step 2: Assess Suitability**
 
@@ -232,50 +267,13 @@ python3 scripts/spot_recommendations.py
 
 **Step 3: Implementation Strategy**
 
-**Option 1: Fargate Spot (Easiest)**
-```yaml
-# ECS task definition
-requiresCompatibilities:
-  - FARGATE
-capacityProviderStrategy:
-  - capacityProvider: FARGATE_SPOT
-    weight: 70  # 70% Spot
-  - capacityProvider: FARGATE
-    weight: 30  # 30% On-Demand
-```
+**Option 1: Fargate Spot** -- Set `capacityProviderStrategy` with `FARGATE_SPOT` weight 70, `FARGATE` weight 30.
 
-**Option 2: EC2 Auto Scaling with Spot**
-```yaml
-# Mixed instances policy
-MixedInstancesPolicy:
-  InstancesDistribution:
-    OnDemandBaseCapacity: 2
-    OnDemandPercentageAboveBaseCapacity: 30
-    SpotAllocationStrategy: capacity-optimized
-  LaunchTemplate:
-    Overrides:
-      - InstanceType: m5.large
-      - InstanceType: m5a.large
-      - InstanceType: m5n.large
-```
+**Option 2: EC2 Auto Scaling with Spot** -- Use `MixedInstancesPolicy` with `OnDemandBaseCapacity: 2`, `OnDemandPercentageAboveBaseCapacity: 30`, `SpotAllocationStrategy: capacity-optimized`, and multiple instance type overrides (m5.large, m5a.large, m5n.large).
 
-**Option 3: EC2 Spot Fleet**
-```bash
-# Create Spot Fleet with diverse instance types
-aws ec2 request-spot-fleet --spot-fleet-request-config file://spot-fleet.json
-```
+**Option 3: EC2 Spot Fleet** -- `aws ec2 request-spot-fleet --spot-fleet-request-config file://spot-fleet.json`
 
-**Step 4: Implement Interruption Handling**
-```bash
-# Handle 2-minute termination notice
-# Instance metadata: /latest/meta-data/spot/instance-action
-
-# In application:
-1. Poll for termination notice
-2. Gracefully shutdown (save state)
-3. Drain connections
-4. Exit
-```
+**Step 4: Implement Interruption Handling** -- Poll instance metadata at `/latest/meta-data/spot/instance-action` for the 2-minute termination notice. On notice: gracefully shutdown, save state, drain connections, exit.
 
 **Reference**: See `references/best_practices.md` → Compute Optimization → Spot Instances
 
@@ -283,11 +281,19 @@ aws ec2 request-spot-fleet --spot-fleet-request-config file://spot-fleet.json
 
 ## Quick Reference
 
-**Monthly review**: `find_unused_resources.py` + `cost_anomaly_detector.py --days 30` + `rightsizing_analyzer.py --days 30`
+Use AWS CLI commands directly -- Claude Code can run `aws ce`, `aws ec2`, `aws cloudwatch`, and `aws compute-optimizer` commands to perform cost analysis.
 
-**Quarterly optimization**: `analyze_ri_recommendations.py --days 60` + `detect_old_generations.py` + `spot_recommendations.py`
+**Monthly review commands**:
+- `aws ec2 describe-volumes --filters Name=status,Values=available` (unused volumes)
+- `aws ce get-cost-and-usage --granularity DAILY --metrics BlendedCost` (cost trends)
+- `aws compute-optimizer get-ec2-instance-recommendations` (rightsizing)
 
-All scripts support `--region REGION` and `--profile PROFILE` flags. Install deps: `pip install boto3 tabulate`
+**Quarterly optimization commands**:
+- `aws ce get-reservation-purchase-recommendation --service EC2` (RI analysis)
+- `aws ec2 describe-instances` with instance type filters (old generations)
+- `aws ec2 describe-spot-price-history` (Spot pricing)
+
+Add `--region REGION` and `--profile PROFILE` to any AWS CLI command as needed.
 
 ---
 
@@ -350,14 +356,14 @@ Need help choosing between services?
 
 ## FinOps Governance & Process
 
-Three-phase rollout: (1) Foundation — Enable Cost Explorer, set up Budgets, define tagging strategy. (2) Visibility — Enforce tags, run optimization scripts, set up monthly reviews. (3) Culture — Cost metrics in engineering KPIs, architecture reviews, optimization sprints.
+Three-phase rollout: (1) Foundation -- Enable Cost Explorer, set up Budgets, define tagging strategy. (2) Visibility -- Enforce tags, run AWS CLI cost analysis commands, set up monthly reviews. (3) Culture -- Cost metrics in engineering KPIs, architecture reviews, optimization sprints.
 
 Full guide: `references/finops_governance.md`
 
 ### Monthly Review Process
 
 **Week 1**: Data Collection
-- Run all optimization scripts
+- Run AWS CLI cost analysis commands (see Workflow 1)
 - Export Cost & Usage Reports
 - Compile findings
 
@@ -416,12 +422,15 @@ Full guide: `references/finops_governance.md`
 
 ### "My bill suddenly increased"
 
-1. Run cost anomaly detection:
+1. Check daily cost breakdown by service:
    ```bash
-   python3 scripts/cost_anomaly_detector.py --days 30
+   aws ce get-cost-and-usage \
+     --time-period Start=$(date -u -v-30d +%Y-%m-%d),End=$(date -u +%Y-%m-%d) \
+     --granularity DAILY --metrics BlendedCost \
+     --group-by Type=DIMENSION,Key=SERVICE
    ```
 
-2. Check Cost Explorer for service breakdown
+2. Check Cost Explorer in the AWS Console for visual breakdown
 3. Review CloudTrail for resource creation events
 4. Check for AutoScaling events
 5. Verify no Reserved Instances expired
@@ -429,9 +438,9 @@ Full guide: `references/finops_governance.md`
 ### "I need to reduce costs by X%"
 
 Follow the optimization workflow:
-1. Run all discovery scripts
+1. Run the discovery commands from Workflow 1 above (unused resources, cost anomalies, rightsizing)
 2. Calculate total potential savings
-3. Prioritize by: Savings Amount × (1 / Effort)
+3. Prioritize by: Savings Amount x (1 / Effort)
 4. Focus on quick wins first
 5. Implement strategic changes for long-term
 
@@ -439,7 +448,9 @@ Follow the optimization workflow:
 
 Run RI analysis:
 ```bash
-python3 scripts/analyze_ri_recommendations.py --days 60
+aws ce get-reservation-purchase-recommendation \
+  --service "Amazon Elastic Compute Cloud - Compute" \
+  --lookback-period-in-days SIXTY_DAYS --term-in-years ONE_YEAR --payment-option NO_UPFRONT
 ```
 
 Look for:
@@ -449,9 +460,12 @@ Look for:
 
 ### "Which resources can I safely delete?"
 
-Run unused resource finder:
+Find unused resources:
 ```bash
-python3 scripts/find_unused_resources.py
+aws ec2 describe-volumes --filters Name=status,Values=available --output table
+aws ec2 describe-addresses --query 'Addresses[?AssociationId==null]' --output table
+aws ec2 describe-snapshots --owner-ids self \
+  --query 'Snapshots[?StartTime<=`2025-01-01`]' --output table
 ```
 
 Safe to delete (usually):
@@ -470,4 +484,4 @@ Always verify with resource owner before deletion!
 
 **Templates**: `assets/templates/monthly_cost_report.md`
 
-**Scripts**: All scripts in `scripts/` support `--help`, `--region`, and `--profile` flags.
+**CLI Tools**: Use AWS CLI commands directly -- Claude Code can run `aws ce`, `aws ec2`, `aws cloudwatch`, and `aws compute-optimizer` commands to perform cost analysis. No additional dependencies required.

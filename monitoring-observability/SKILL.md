@@ -50,26 +50,27 @@ histogram_quantile(0.95,
 
 **Deep dive**: `references/metrics_design.md` — metric types, cardinality, naming conventions, dashboard design
 
-### Automated Metric Analysis
+### Querying Metrics Directly
 
-Detect anomalies and trends in your metrics:
+Query Prometheus and CloudWatch metrics using CLI/curl:
 
 ```bash
-# Analyze Prometheus metrics for anomalies
-python3 scripts/analyze_metrics.py prometheus \
-  --endpoint http://localhost:9090 \
-  --query 'rate(http_requests_total[5m])' \
-  --hours 24
+# Query Prometheus instant value
+curl -s 'http://localhost:9090/api/v1/query?query=rate(http_requests_total[5m])' | jq .
 
-# Analyze CloudWatch metrics
-python3 scripts/analyze_metrics.py cloudwatch \
+# Query Prometheus over a time range (last 1h, 15s step)
+curl -s 'http://localhost:9090/api/v1/query_range?query=rate(http_requests_total[5m])&start='$(date -u -v-1H +%Y-%m-%dT%H:%M:%SZ)'&end='$(date -u +%Y-%m-%dT%H:%M:%SZ)'&step=15s' | jq .
+
+# Query CloudWatch metrics (e.g., EC2 CPU over last 1 hour)
+aws cloudwatch get-metric-statistics \
   --namespace AWS/EC2 \
-  --metric CPUUtilization \
-  --dimensions InstanceId=i-1234567890abcdef0 \
-  --hours 48
+  --metric-name CPUUtilization \
+  --dimensions Name=InstanceId,Value=i-1234567890abcdef0 \
+  --start-time $(date -u -v-1H +%Y-%m-%dT%H:%M:%SZ) \
+  --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
+  --period 300 \
+  --statistics Average Maximum
 ```
-
-**→ Script**: [scripts/analyze_metrics.py](scripts/analyze_metrics.py)
 
 ---
 
@@ -341,20 +342,19 @@ class ErrorSampler(Sampler):
 
 ### Scenario 1: I'm Using Datadog and Costs Are Too High
 
+Check usage directly in the Datadog UI at **Plan & Usage > Usage Summary**, or query the API:
+
 ```bash
-# Analyze Datadog usage (requires API key and APP key)
-python3 scripts/datadog_cost_analyzer.py \
-  --api-key $DD_API_KEY \
-  --app-key $DD_APP_KEY
+# Get Datadog usage summary for the current month (requires DD_API_KEY and DD_APP_KEY)
+curl -s -X GET "https://api.datadoghq.com/api/v1/usage/summary?start_month=$(date -u +%Y-%m)" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq .
 
-# Show detailed breakdown by category
-python3 scripts/datadog_cost_analyzer.py \
-  --api-key $DD_API_KEY \
-  --app-key $DD_APP_KEY \
-  --show-details
+# Get hourly usage for hosts (identify peak usage)
+curl -s -X GET "https://api.datadoghq.com/api/v1/usage/hosts?start_hr=$(date -u -v-24H +%Y-%m-%dT%H)" \
+  -H "DD-API-KEY: ${DD_API_KEY}" \
+  -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" | jq .
 ```
-
-**→ Script**: [scripts/datadog_cost_analyzer.py](scripts/datadog_cost_analyzer.py)
 
 #### Common Cost Optimization Strategies
 
@@ -396,22 +396,23 @@ Migration to open-source stack (Prometheus + Grafana, Loki, Tempo/Jaeger, Alertm
 
 ### Health Check Validation
 
-Validate health check endpoints against best practices:
+Validate health check endpoints using `curl`:
 
 ```bash
-# Check single endpoint
-python3 scripts/health_check_validator.py https://api.example.com/health
+# Check endpoint returns 200 and measure response time
+curl -sf -o /dev/null -w "status:%{http_code} time:%{time_total}s\n" https://api.example.com/health
 
-# Check multiple endpoints
-python3 scripts/health_check_validator.py \
-  https://api.example.com/health \
-  https://api.example.com/readiness \
-  --verbose
+# Get full response body (check for JSON 'status' field, version info)
+curl -sf https://api.example.com/health | jq .
+
+# Check multiple endpoints in sequence
+for ep in /health /readiness /liveness; do
+  printf "%-20s " "$ep"
+  curl -sf -o /dev/null -w "status:%{http_code} time:%{time_total}s\n" "https://api.example.com${ep}"
+done
 ```
 
-**Checks**: 200 status, response time < 1s, JSON format, 'status' field, version/build info, dependency checks, caching disabled.
-
-**→ Script**: [scripts/health_check_validator.py](scripts/health_check_validator.py)
+**What to verify**: 200 status, response time < 1s, JSON format with `status` field, version/build info, dependency checks, no caching headers (`Cache-Control: no-cache`).
 
 ### Common Troubleshooting Workflows
 
@@ -454,7 +455,7 @@ See `references/quick_commands.md` for Kubernetes, Elasticsearch, Loki, and Clou
 
 ## Resources Summary
 
-**Scripts**: `analyze_metrics.py` | `alert_quality_checker.py` | `slo_calculator.py` | `log_analyzer.py` | `dashboard_generator.py` | `health_check_validator.py` | `datadog_cost_analyzer.py`
+**Scripts**: `alert_quality_checker.py` | `dashboard_generator.py` | `log_analyzer.py` | `slo_calculator.py`
 
 **References**: `metrics_design.md` | `alerting_best_practices.md` | `logging_guide.md` | `tracing_guide.md` | `slo_sla_guide.md` | `tool_comparison.md` | `datadog_migration.md` | `dql_promql_translation.md`
 

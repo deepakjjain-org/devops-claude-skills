@@ -624,9 +624,10 @@ repos:
 
 ### CI/CD Health Monitoring
 
-Use the `scripts/ci_health.py` script:
+Use the `gh` CLI to check pipeline health:
 ```bash
-python3 scripts/ci_health.py --platform github --repo owner/repo
+gh run list --limit 20
+gh workflow list
 ```
 
 ### Regular Maintenance

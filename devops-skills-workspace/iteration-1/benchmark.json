@@ -1,0 +1,652 @@
+{
+  "metadata": {
+    "skill_name": "devops-skills",
+    "timestamp": "2026-04-10T00:00:00Z",
+    "evals_run": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "aws-cost-spike",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 115.7,
+        "tokens": 77322,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References all 6 scripts by filename: cost_anomaly_detector.py, find_unused_resources.py, rightsizing_analyzer.py, detect_old_generations.py, analyze_ri_recommendations.py, and spot_recommendations.py. Complete execution checklist with full invocation commands provided at the end"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Includes numerous CLI commands: 'python3 scripts/cost_anomaly_detector.py --days 30 --region us-east-1', 'aws ec2 describe-reserved-instances --region us-east-1 ...', 'aws cloudtrail lookup-events ...', 'aws autoscaling describe-auto-scaling-groups ...', 'aws budgets create-budget ...', and many more"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "References the FinOps governance framework (corresponding to references/finops_governance.md) in Phase 5: 'Following the FinOps governance framework' with Week 1-4 monthly review process. Also references the monthly report template at assets/templates/monthly_cost_report.md"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the 5-phase Discover-Analyze-Prioritize-Implement-Monitor workflow from the aws-cost-optimization skill. Phases are explicitly labeled: Phase 1 Discover, Phase 2 Analyze, Phase 3 Prioritize, Phase 4 Respond/Implement, Phase 5 Monitor"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Provides tiered remediation: Tier 1 (Immediate, this week) with 5 actions, Tier 2 (This Month) with 4 actions, Tier 3 (Next Quarter) with 4 actions. Each tier includes estimated savings, effort, and risk. Includes CFO communication framework and complete 6-step script execution checklist"
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "aws-cost-spike",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 110.2,
+        "tokens": 54667,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References all 6 scripts by filename: cost_anomaly_detector.py, find_unused_resources.py, rightsizing_analyzer.py, detect_old_generations.py, analyze_ri_recommendations.py, spot_recommendations.py. Includes a full scripts reference table at the end with purpose and command for each"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable commands including 'python3 scripts/cost_anomaly_detector.py --days 30', 'python3 scripts/find_unused_resources.py --region us-east-1', AWS CLI commands like 'aws ec2 describe-instances --region us-east-1 ...', 'aws rds describe-db-instances --region us-east-1 ...', and many more"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": false,
+          "evidence": "Does not explicitly reference any references/*.md file by name. Does not cite best_practices.md, service_alternatives.md, or finops_governance.md. Only references scripts and the monthly report template concept generically"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the 5-phase Discover-Analyze-Prioritize-Implement-Monitor workflow: Phase 1 DISCOVER, Phase 2 ANALYZE, Phase 3 PRIORITIZE, Phase 4 IMPLEMENT, Phase 5 MONITOR"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Provides tiered prioritization: Tier 1 (Immediate, this week) with 5 actions, Tier 2 (This Month) with 5 actions, Tier 3 (Strategic, this quarter) with 4 actions. Phase 4 provides specific recommendations per root cause scenario with commands. Phase 5 includes budget setup and tagging governance steps"
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "cicd-nodejs-pipeline",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 160.3,
+        "tokens": 80709,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 'python3 scripts/pipeline_analyzer.py --platform github --workflow .github/workflows/ci.yml' in Part 1 and 'python3 scripts/ci_health.py --platform github --repo your-org/your-repo --limit 20' in Part 10."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Includes numerous runnable commands: 'npm ci', 'npx turbo run build --filter=[HEAD^1]', 'npx playwright test --shard=...', 'npx jest --shard=...', 'docker push ghcr.io/...', and complete GitHub Actions workflow YAML with inline commands."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": false,
+          "evidence": "References the skill's design philosophy ('Fail Fast -> Parallelize -> Cache -> Secure -> Deploy') and DevSecOps best practices but does not explicitly cite references/best_practices.md, references/security.md, references/optimization.md, or references/devsecops.md by filename."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the CI/CD skill's core workflow: 'Fail Fast -> Parallelize -> Cache -> Secure -> Deploy', with 10 structured parts covering diagnosis, optimization, security, and deployment."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Organized as 10 numbered parts with a 4-week implementation plan (Foundation -> Test Optimization -> Security Integration -> Deployment & Hardening), plus tables comparing before/after timing."
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "cicd-nodejs-pipeline",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 149.4,
+        "tokens": 73976,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 'python3 scripts/pipeline_analyzer.py --platform github --workflow .github/workflows/ci.yml' in Step 1 and 'python3 scripts/ci_health.py --platform github --repo your-org/your-repo --limit 20' in Step 8."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Includes numerous runnable commands: 'npm ci', 'npx turbo run build --filter=[HEAD^1]', 'npm install turbo --save-dev', 'npx jest --shard=1/4 --ci --coverage', 'npx playwright test --shard=...', 'npx nx affected --target=build --base=origin/main', and more."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": false,
+          "evidence": "Does not explicitly cite references/best_practices.md, references/security.md, references/optimization.md, references/devsecops.md, or references/troubleshooting.md by filename. Mentions concepts like 'shift-left' and 'DevSecOps' generically."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows a structured approach: Design -> Optimize -> Secure -> Deploy, organized as 8 sequential steps with a fail-fast pipeline architecture diagram."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Organized as 8 numbered steps with detailed optimization tables (Quick Wins, Medium Impact, Advanced), security scanning breakdown, and monitoring checklist."
+        }
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "gitops-argocd-setup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 143.0,
+        "tokens": 45793,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 6 scripts: validate_gitops_repo.py (Step 3), applicationset_generator.py (Step 5), promotion_validator.py (Step 6), secret_audit.py (Step 7), check_argocd_health.py (Step 8), sync_drift_detector.py (Step 8). Also listed in Troubleshooting Quick Reference table."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Includes numerous CLI commands: 'kubectl apply -n argocd -f https://raw.githubusercontent.com/.../install.yaml', 'argocd cluster add dev-cluster-context --name dev --label environment=dev', 'argocd app sync prod-frontend', 'argocd app diff prod-frontend', 'kubectl port-forward svc/argocd-server', and many more."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "References 'references/progressive_delivery.md' in the Next Steps section for canary deployments guidance."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Explicitly references 'Workflow 1 (ArgoCD Initial Setup) and Workflow 4 (Multi-Cluster Deployments)' from the skill, follows the decision tree, and uses the hub-and-spoke architecture pattern."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Organized as 9 numbered steps plus a troubleshooting quick reference table and next steps: Install -> Register Clusters -> Repo Structure -> RBAC -> ApplicationSets -> Promotion -> Secrets -> Monitoring -> Apply."
+        }
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "gitops-argocd-setup",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 127.3,
+        "tokens": 48576,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 6 scripts: validate_gitops_repo.py (Phase 3), applicationset_generator.py (Phase 4), promotion_validator.py (Phase 6), secret_audit.py (Phase 7), check_argocd_health.py (Phase 8), sync_drift_detector.py (Phase 8). Also listed in Key References summary table."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Includes numerous CLI commands: 'kubectl apply -n argocd -f https://raw.githubusercontent.com/.../install.yaml', 'argocd cluster add dev-cluster-context --name dev-cluster --label environment=dev', 'argocd app list', 'argocd app diff prod-prod-cluster-frontend', 'sops -e secret.yaml > secret.enc.yaml', and many more."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "Explicitly lists multiple references: 'references/repo_patterns.md' (Phase 3), 'references/multi_cluster.md' (Phase 4), 'references/secret_management.md' (Phase 7), 'references/troubleshooting.md' (Phase 8), 'references/best_practices.md' (Key References table)."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the skill's decision tree (Workflow 1: Initial Setup, Workflow 4: Multi-Cluster Deployments), uses hub-and-spoke pattern, and follows the recommended promotion workflow 'Dev (auto-sync) -> Staging (auto-sync) -> Production (manual approval)'."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Organized as 8 numbered phases: Install -> Register Clusters -> Repo Structure -> ApplicationSets -> RBAC -> Promotion -> Secrets -> Health Monitoring, plus a comprehensive summary checklist of 13 steps."
+        }
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "iac-terraform-state-lock",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 59.5,
+        "tokens": 36160,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "Mentions 'inspect_state.py' on line 79: 'python3 scripts/inspect_state.py /path/to/your/terraform/directory --check-drift'"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable commands including 'terraform force-unlock abc-123', 'aws dynamodb get-item ...', 'terraform apply', 'terraform state list', and 'export TF_LOG=DEBUG'"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": false,
+          "evidence": "Mentions 'troubleshooting guide' and 'best practices' in passing but does not explicitly reference a references/*.md file path (e.g., references/troubleshooting.md or references/best_practices.md)"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Structured with Diagnosis section identifying the issue type, followed by systematic Step-by-Step Resolution (Steps 1-5), and a Prevention section \u2014 aligns with the skill's triage-based workflow pattern"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Five clearly numbered steps: Step 1 (Confirm No One Else Is Running), Step 2 (Inspect Lock in DynamoDB), Step 3 (Force Unlock), Step 4 (Retry Operation), Step 5 (Verify State Health)"
+        }
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "iac-terraform-state-lock",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 59.0,
+        "tokens": 40726,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "Mentions 'inspect_state.py' on line 75: 'python3 scripts/inspect_state.py /path/to/your/terraform/directory --check-drift'"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable commands including 'terraform force-unlock abc-123', 'terraform force-unlock -force abc-123', 'aws dynamodb get-item ...', 'terraform plan -out=tfplan && terraform apply tfplan', and 'terraform state list'"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": false,
+          "evidence": "Mentions 'skill's best practices' (line 98) but does not explicitly reference a references/*.md file path (e.g., references/best_practices.md or references/troubleshooting.md)"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Structured with numbered steps for resolution, an 'Understanding What Happened' section explaining root causes, and a 'Prevention' section \u2014 follows a systematic troubleshooting workflow pattern"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Five clearly numbered steps: Step 1 (Confirm No One Else Is Running), Step 2 (Inspect Lock in DynamoDB), Step 3 (Force-Unlock the State), Step 4 (Retry Your Operation), Step 5 (Verify State Integrity). Also includes a summary table mapping steps to commands."
+        }
+      ]
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "iac-terraform-vpc-module",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 112.0,
+        "tokens": 54657,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References both 'init_module.py' (line 18: 'python3 scripts/init_module.py vpc --path ./modules') and 'validate_module.py' (line 735: 'python3 scripts/validate_module.py modules/vpc')"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable commands including 'python3 scripts/init_module.py vpc --path ./modules', 'python3 scripts/validate_module.py modules/vpc', 'terraform init', 'terraform fmt -recursive', 'terraform validate', 'terraform plan -out=tfplan', 'terraform apply tfplan', and 'terraform-docs markdown modules/vpc > modules/vpc/README.md'"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "Explicitly references 'references/cost_optimization.md' in Step 6 (line 750: \"Following the skill's cost optimization reference (references/cost_optimization.md)\")"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Opens with the skill's decision tree ('Is this reusable across environments/projects? Yes'), then follows structured workflow: Scaffold -> Implement -> Environment Configs -> CIDR Allocation -> Validate -> Cost Optimization -> Deploy -> Next Steps"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Eight clearly numbered steps: Step 1 (Scaffold), Step 2 (Implementation), Step 3 (Environment Configurations), Step 4 (CIDR Allocation), Step 5 (Validate), Step 6 (Cost Optimization), Step 7 (Deployment Workflow), Step 8 (Next Steps)"
+        }
+      ]
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "iac-terraform-vpc-module",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 115.9,
+        "tokens": 56503,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References both 'init_module.py' (line 17: 'python3 scripts/init_module.py vpc --path ./modules') and 'validate_module.py' (line 649: 'python3 scripts/validate_module.py modules/vpc')"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable commands including 'python3 scripts/init_module.py vpc --path ./modules', 'python3 scripts/validate_module.py modules/vpc', 'terraform init', 'terraform validate', 'terraform plan -out=tfplan', 'terraform apply tfplan', 'terraform output', and 'terraform-docs markdown . > README.md'"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "Explicitly references 'references/cost_optimization.md' in Step 5 (line 629: \"Following the skill's cost optimization reference (references/cost_optimization.md)\")"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Opens with the skill's decision tree ('Is this reusable across environments/projects? --> Yes --> Create a Terraform module'), then follows structured workflow: Scaffold -> Implement -> Environment Configs -> CIDR Design -> Cost Optimization -> Validate -> Test -> Quality Checklist -> Documentation -> Terragrunt Alternative"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Nine clearly numbered steps: Step 1 (Scaffold), Step 2 (Implementation), Step 3 (Environment Configurations), Step 4 (CIDR Range Design), Step 5 (Cost Optimization), Step 6 (Validate), Step 7 (Test), Step 8 (Quality Checklist), Step 9 (Generate Documentation), plus an optional Terragrunt section"
+        }
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "k8s-crashloop",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 93.9,
+        "tokens": 42679,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References cluster_health.py ('python3 /path/to/k8s-troubleshooter/skills/scripts/cluster_health.py' in Phase 2) and diagnose_pod.py ('python3 /path/to/k8s-troubleshooter/skills/scripts/diagnose_pod.py <namespace> <api-pod-name>' in Phase 3 and Phase 6)"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable kubectl commands including 'kubectl describe pod <api-pod-name> -n <namespace>', 'kubectl logs <api-pod-name> -n <namespace> --previous', 'kubectl rollout undo deployment/<api-deployment> -n <namespace>', 'kubectl get endpoints', 'kubectl run tmp-debug --rm -i --tty --image=busybox', and many more"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "References the common issues reference doc: 'consistent with CrashLoopBackOff cause #5 from the skill's common issues reference: Missing dependencies (DB, cache, etc.)' which maps to references/common_issues.md"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the exact 6-phase k8s-troubleshooter workflow: Phase 1 Gather Context, Phase 2 Initial Triage, Phase 3 Deep Dive Investigation, Phase 4 Root Cause Analysis, Phase 5 Remediation Steps, Phase 6 Verify and Monitor. Each section is explicitly labeled 'Skill Workflow -- Phase N'"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Phase 5 provides structured remediation organized by root cause (Cause A through D), each with specific commands. Includes a decision tree in section 7 and 7 numbered prevention recommendations in section 8"
+        }
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "k8s-crashloop",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 88.9,
+        "tokens": 49257,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References cluster_health.py ('python3 scripts/cluster_health.py' in Phase 2), check_namespace.py ('python3 scripts/check_namespace.py <your-namespace>' in Phase 2), and diagnose_pod.py ('python3 scripts/diagnose_pod.py <namespace> <api-pod-name>' in Phase 3 and Phase 6)"
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable kubectl commands including 'kubectl describe pod <api-pod-name> -n <namespace>', 'kubectl logs <api-pod-name> -n <namespace> --previous', 'kubectl rollout undo deployment/<api-deployment> -n <namespace>', 'kubectl exec -it <postgres-pod-name> -n <namespace> -- pg_isready', and many more"
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "Explicitly references common_issues.md by name: 'Based on the CrashLoopBackOff reference (common_issues.md), the connection refused to postgres after a new deployment points to one of these likely root causes' in Phase 4"
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Follows the exact 6-phase k8s-troubleshooter workflow: Phase 1 Gather Context, Phase 2 Initial Triage, Phase 3 Deep Dive Investigation, Phase 4 Identify Root Cause, Phase 5 Remediation, Phase 6 Verify and Monitor"
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Phase 5 provides structured remediation with an immediate rollback step followed by root-cause-specific fixes (connection string, no endpoints, postgres down, network policy, liveness probe), each with specific commands. Also includes init container recommendation and 7 numbered prevention items"
+        }
+      ]
+    },
+    {
+      "eval_id": 11,
+      "eval_name": "monitoring-strategy",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 188.5,
+        "tokens": 83214,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 6 scripts by filename: slo_calculator.py (Section 3), alert_quality_checker.py (Section 4), dashboard_generator.py (Section 7), health_check_validator.py (Section 8), analyze_metrics.py and log_analyzer.py (Section 11 table)."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable CLI commands provided, e.g.: 'python3 monitoring-observability/scripts/slo_calculator.py --table', 'python3 monitoring-observability/scripts/dashboard_generator.py webapp --title \"Payment Service\" --service payment-service --output dashboards/payment-service.json', 'python3 monitoring-observability/scripts/alert_quality_checker.py /path/to/alert-rules/', 'python3 monitoring-observability/scripts/health_check_validator.py https://service.internal/healthz https://service.internal/ready --verbose'."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "Section 12 'Key Reference Documents' explicitly lists 6 reference files: metrics_design.md, alerting_best_practices.md, logging_guide.md, tracing_guide.md, slo_sla_guide.md, and tool_comparison.md, all under the references/ directory."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Response is organized into 12 numbered sections following a systematic approach: Tool Selection (1) -> Metrics Strategy (2) -> SLOs (3) -> Alerting (4) -> Log Aggregation (5) -> Distributed Tracing (6) -> Dashboards (7) -> Health Checks (8) -> On-Call/Incident Response (9) -> Implementation Roadmap (10) -> Scripts (11) -> References (12). This mirrors the monitoring-observability skill's decision-tree workflow pattern (Setup from scratch -> tool selection -> metrics -> alerting -> SLOs)."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Section 10 provides a detailed 4-week implementation roadmap with phased steps: Week 1 (Foundation: deploy kube-prometheus-stack, Loki, Tempo, OTel Collector, PagerDuty), Week 2 (Application Instrumentation: structured logging, Prometheus metrics, OTel auto-instrumentation, health checks), Week 3 (Dashboards, Alerts, SLOs), Week 4 (Validation and Hardening). Each week contains 4-8 numbered checkbox items."
+        }
+      ]
+    },
+    {
+      "eval_id": 11,
+      "eval_name": "monitoring-strategy",
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 184.3,
+        "tokens": 73482,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "References at least one script by filename",
+          "passed": true,
+          "evidence": "References 7 scripts by filename: analyze_metrics.py (Phase 1.5), alert_quality_checker.py (Phase 4.3), slo_calculator.py (Phase 4.1), dashboard_generator.py (Phase 5.2), health_check_validator.py (Phase 6.2), log_analyzer.py (Summary table), and cluster_health.py (Phase 1.5). Summary table at end lists all 6 monitoring scripts."
+        },
+        {
+          "text": "Includes a specific CLI command",
+          "passed": true,
+          "evidence": "Multiple runnable CLI commands provided, e.g.: 'helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace ...', 'python3 scripts/slo_calculator.py --table', 'python3 scripts/dashboard_generator.py webapp --title \"${service} Dashboard\" --service ${service} --output dashboards/${service}.json', 'python3 scripts/health_check_validator.py https://api-gateway.prod/healthz ...', 'helm install loki grafana/loki-stack ...', 'helm install tempo grafana/tempo ...'."
+        },
+        {
+          "text": "Links to a relevant reference file",
+          "passed": true,
+          "evidence": "References 6 reference files throughout the document with inline callouts: 'references/tool_comparison.md' (Executive Summary), 'references/metrics_design.md' (Phases 1.2 and 1.3), 'references/logging_guide.md' (Phase 2.2), 'references/tracing_guide.md' (Phase 3.1), 'references/slo_sla_guide.md' (Phase 4.1), 'references/alerting_best_practices.md' (Phase 4.2). Summary table at end consolidates all references."
+        },
+        {
+          "text": "Follows the skill's workflow structure",
+          "passed": true,
+          "evidence": "Response is organized into 6 sequential phases matching the skill's workflow: Phase 1 (Foundation: Prometheus + metrics instrumentation), Phase 2 (Logging: Loki + structured logs), Phase 3 (Distributed Tracing: Tempo + OTel), Phase 4 (Alerting: SLO-based burn rate alerts), Phase 5 (Dashboards: Grafana hierarchy), Phase 6 (Health Checks: pre-launch validation), plus Post-Launch operations. This follows the monitoring-observability skill's decision-tree pattern (Setup from scratch -> metrics -> logs -> traces -> alerts -> dashboards)."
+        },
+        {
+          "text": "Provides step-by-step remediation",
+          "passed": true,
+          "evidence": "Six numbered phases with sub-steps (1.1-1.5, 2.1-2.5, 3.1-3.6, 4.1-4.5, 5.1-5.4, 6.1-6.2) provide sequential implementation guidance. Implementation Timeline table maps phases to weeks. Post-Launch section adds ongoing monthly SLO reviews and quarterly tuning steps."
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.943,
+        "stddev": 0.098
+      },
+      "time_seconds": {
+        "mean": 124.7,
+        "stddev": 43.0
+      },
+      "tokens": {
+        "mean": 60076,
+        "stddev": 19860
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.914,
+        "stddev": 0.107
+      },
+      "time_seconds": {
+        "mean": 119.3,
+        "stddev": 40.5
+      },
+      "tokens": {
+        "mean": 56741,
+        "stddev": 12655
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.029",
+      "time_seconds": "+5.4",
+      "tokens": "+3335"
+    }
+  },
+  "notes": [
+    "New skill (with_skill) averages 94.3% vs old skill 91.4% (+2.9%)",
+    "aws-cost-spike is the only eval where new outperforms old (100% vs 80%)",
+    "Reference file linking is the weakest assertion across both versions",
+    "No regressions detected - new skills are at parity or better despite 26% fewer lines"
+  ]
+}

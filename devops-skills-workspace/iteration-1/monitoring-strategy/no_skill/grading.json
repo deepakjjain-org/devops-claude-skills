@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": false,
+      "evidence": "No .py diagnostic script is mentioned. The response does not reference slo_calculator.py, alert_quality_checker.py, dashboard_generator.py, or any other skill scripts."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable CLI commands included: 'helm repo add prometheus-community https://prometheus-community.github.io/helm-charts', 'helm install kube-prometheus-stack ...', 'helm install loki grafana/loki ...', 'helm install promtail grafana/promtail ...', 'helm install tempo grafana/tempo-distributed ...', 'helm install otel-collector open-telemetry/opentelemetry-collector ...'."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "No references/*.md files are linked. The response does not point to metrics_design.md, alerting_best_practices.md, tool_comparison.md, or any other skill reference documentation."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows a comprehensive structured approach: Executive Summary -> Tool Selection & Budget -> Architecture Overview -> 4-Week Implementation Plan (Week 1: Metrics, Week 2: Logging, Week 3: Tracing, Week 4: Alerting/SLOs) -> Key Metrics -> Dashboard Inventory -> Scaling Considerations -> Day-2 Operations -> Common Pitfalls -> Quick-Start Checklist. This mirrors a decision-tree based monitoring setup workflow."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "The response is organized as a 4-week phased rollout with specific day-by-day tasks within each week. The Quick-Start Checklist provides 4 phases of checkbox items. Section 7 provides ongoing operational checklists (weekly, monthly, quarterly, per-release). The entire structure is implementation-oriented with clear sequencing."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "timing": {
+    "total_tokens": 28824,
+    "duration_ms": 143127,
+    "total_duration_seconds": 143.1
+  }
+}

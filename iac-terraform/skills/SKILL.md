@@ -126,22 +126,23 @@ module "vpc" {
 
 **Inspect state and check health:**
 ```bash
-python3 scripts/inspect_state.py /path/to/terraform/directory
+# List all managed resources
+terraform state list
+
+# Show detailed state for a specific resource
+terraform state show <resource_address>
+
+# Show full state summary (all resources, outputs, providers)
+terraform show
 ```
 
 **Check for drift:**
 ```bash
-python3 scripts/inspect_state.py /path/to/terraform/directory --check-drift
+# Exit code 0 = no changes, 1 = error, 2 = drift detected
+terraform plan -detailed-exitcode
 ```
 
-The script provides:
-- Resource count and types
-- Backend configuration
-- Provider versions
-- Issues with resources (tainted, etc.)
-- Drift detection (if requested)
-
-**Manual state operations:**
+**State operations:**
 ```bash
 # List all resources
 terraform state list
@@ -367,7 +368,6 @@ Ready-to-use templates in `assets/workflows/`:
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | `init_module.py` | Scaffold new module with standard structure | `python3 scripts/init_module.py <name> [--path ./modules] [--json]` |
-| `inspect_state.py` | State inspection, health check, drift detection | `python3 scripts/inspect_state.py <path> [--check-drift]` |
 | `validate_module.py` | Validate module against best practices | `python3 scripts/validate_module.py <path>` |
 
 ## Assets

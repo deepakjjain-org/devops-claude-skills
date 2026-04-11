@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References both 'init_module.py' (line 17: 'python3 scripts/init_module.py vpc --path ./modules') and 'validate_module.py' (line 649: 'python3 scripts/validate_module.py modules/vpc')"
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable commands including 'python3 scripts/init_module.py vpc --path ./modules', 'python3 scripts/validate_module.py modules/vpc', 'terraform init', 'terraform validate', 'terraform plan -out=tfplan', 'terraform apply tfplan', 'terraform output', and 'terraform-docs markdown . > README.md'"
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": true,
+      "evidence": "Explicitly references 'references/cost_optimization.md' in Step 5 (line 629: \"Following the skill's cost optimization reference (references/cost_optimization.md)\")"
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Opens with the skill's decision tree ('Is this reusable across environments/projects? --> Yes --> Create a Terraform module'), then follows structured workflow: Scaffold -> Implement -> Environment Configs -> CIDR Design -> Cost Optimization -> Validate -> Test -> Quality Checklist -> Documentation -> Terragrunt Alternative"
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Nine clearly numbered steps: Step 1 (Scaffold), Step 2 (Implementation), Step 3 (Environment Configurations), Step 4 (CIDR Range Design), Step 5 (Cost Optimization), Step 6 (Validate), Step 7 (Test), Step 8 (Quality Checklist), Step 9 (Generate Documentation), plus an optional Terragrunt section"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "total_tokens": 56503,
+    "duration_ms": 115879,
+    "total_duration_seconds": 115.9
+  }
+}

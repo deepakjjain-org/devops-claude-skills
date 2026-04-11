@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": true,
+      "evidence": "References all 6 scripts by filename: cost_anomaly_detector.py, find_unused_resources.py, rightsizing_analyzer.py, detect_old_generations.py, analyze_ri_recommendations.py, spot_recommendations.py. Includes a full scripts reference table at the end with purpose and command for each"
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable commands including 'python3 scripts/cost_anomaly_detector.py --days 30', 'python3 scripts/find_unused_resources.py --region us-east-1', AWS CLI commands like 'aws ec2 describe-instances --region us-east-1 ...', 'aws rds describe-db-instances --region us-east-1 ...', and many more"
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "Does not explicitly reference any references/*.md file by name. Does not cite best_practices.md, service_alternatives.md, or finops_governance.md. Only references scripts and the monthly report template concept generically"
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows the 5-phase Discover-Analyze-Prioritize-Implement-Monitor workflow: Phase 1 DISCOVER, Phase 2 ANALYZE, Phase 3 PRIORITIZE, Phase 4 IMPLEMENT, Phase 5 MONITOR"
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "Provides tiered prioritization: Tier 1 (Immediate, this week) with 5 actions, Tier 2 (This Month) with 5 actions, Tier 3 (Strategic, this quarter) with 4 actions. Phase 4 provides specific recommendations per root cause scenario with commands. Phase 5 includes budget setup and tagging governance steps"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_tokens": 54667,
+    "duration_ms": 110210,
+    "total_duration_seconds": 110.2
+  }
+}

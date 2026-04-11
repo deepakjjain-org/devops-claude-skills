@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "References at least one script by filename",
+      "passed": false,
+      "evidence": "No .py diagnostic script is mentioned. The response does not reference any skill scripts. It provides complete GitHub Actions YAML configuration files but no references to Python diagnostic scripts."
+    },
+    {
+      "text": "Includes a specific CLI command",
+      "passed": true,
+      "evidence": "Multiple runnable commands included: 'pnpm install --frozen-lockfile', 'pnpm audit --audit-level=high', 'npx license-checker --production --failOn \"GPL-3.0;AGPL-3.0\" --summary', 'npx nx affected --target=build --base=origin/main --head=HEAD', 'npx turbo run build --filter=\"...[origin/main]\"', 'docker build ...', and GitHub Actions workflow commands."
+    },
+    {
+      "text": "Links to a relevant reference file",
+      "passed": false,
+      "evidence": "No references/*.md files are linked. The response does not point to best_practices.md, security.md, optimization.md, or any other skill reference documentation."
+    },
+    {
+      "text": "Follows the skill's workflow structure",
+      "passed": true,
+      "evidence": "Follows a structured implementation approach organized in numbered sections: Build Optimization Strategy -> Complete Pipeline Configuration (with 7 phased jobs) -> Pipeline Architecture Diagram -> Key Speed Optimizations -> Security Scanning Summary -> Additional Configuration -> Branch Protection -> Monitoring -> Quick Wins Checklist -> Cost Considerations. This is a task-based workflow with security integration."
+    },
+    {
+      "text": "Provides step-by-step remediation",
+      "passed": true,
+      "evidence": "The pipeline is organized into 7 clearly labeled phases (Phase 1: Setup & Change Detection through Phase 7: Deploy). Section 9 provides a numbered 6-item Quick Wins Checklist for immediate improvements. The overall structure guides the user through implementation in a logical order."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "timing": {
+    "total_tokens": 29316,
+    "duration_ms": 115718,
+    "total_duration_seconds": 115.7
+  }
+}
