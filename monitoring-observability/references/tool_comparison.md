@@ -80,7 +80,7 @@ scrape_configs:
 - Companies prioritizing ease of use over cost
 - Organizations needing full observability
 
-**Pricing**: $15-$31/host/month + custom metrics fees
+**Pricing**: $15-23/host/month (Infrastructure Pro/Enterprise, billed annually) + $31/host/month for APM + custom metrics fees. Actual costs vary significantly with add-ons.
 
 **Setup Complexity**: Low
 
@@ -180,16 +180,17 @@ cloudwatch.put_metric_data(
 - ✅ Long-term storage
 
 **Weaknesses**:
-- ❌ Relatively new (less mature)
 - ❌ Some Prometheus features missing
 - ❌ Requires Grafana for visualization
+- ❌ Costs can grow with high-cardinality metrics
 
 **Best For**:
 - Teams wanting Prometheus without ops overhead
 - Multi-cloud environments
 - Organizations already using Grafana
+- Cost-effective alternative to Datadog (managed, ~50% cheaper)
 
-**Pricing**: $8/month + $0.29/1M samples
+**Pricing**: Free tier available; paid plans from $29/month + usage-based pricing for metrics, logs, and traces
 
 **Setup Complexity**: Low-Medium
 
@@ -231,9 +232,9 @@ cloudwatch.put_metric_data(
 
 **Example**:
 ```json
-PUT /logs-2024.10/_doc/1
+PUT /logs-2026.03/_doc/1
 {
-  "timestamp": "2024-10-28T14:32:15Z",
+  "timestamp": "2026-03-28T14:32:15Z",
   "level": "error",
   "message": "Payment failed"
 }
@@ -430,7 +431,7 @@ PUT /logs-2024.10/_doc/1
 - ✅ Good profiling features
 
 **Weaknesses**:
-- ❌ Expensive ($31/host/month)
+- ❌ Expensive ($31/host/month, billed annually)
 - ❌ Vendor lock-in
 - ❌ Limited sampling control
 
@@ -483,15 +484,15 @@ PUT /logs-2024.10/_doc/1
 - ✅ Great for teams
 
 **Weaknesses**:
-- ❌ Very expensive ($50-100+/host/month)
+- ❌ Very expensive ($15-23/host/month infrastructure + $31/host/month APM, plus log/metrics add-ons)
 - ❌ Vendor lock-in
-- ❌ Unpredictable costs
+- ❌ Unpredictable costs (custom metrics, log ingestion, and add-ons can double the bill)
 
-**Total Cost** (example 100 hosts):
-- Infrastructure: $3,100/month
+**Total Cost** (example 100 hosts, billed annually):
+- Infrastructure Pro: $1,500/month (or $2,300/month Enterprise)
 - APM: $3,100/month
 - Logs: ~$2,000/month
-- **Total: ~$8,000/month**
+- **Total: ~$6,600-7,400/month** (before custom metrics and other add-ons)
 
 ---
 
@@ -624,7 +625,7 @@ PUT /logs-2024.10/_doc/1
 ### Choose Datadog If:
 - ✅ Want ease of use
 - ✅ Need full observability now
-- ✅ Budget allows ($8k+/month for 100 hosts)
+- ✅ Budget allows ($7k+/month for 100 hosts with Pro + APM + logs)
 - ✅ Limited ops team
 - ✅ Need excellent UX
 

@@ -17,12 +17,14 @@ This guide helps you migrate from Datadog to a cost-effective open-source observ
 
 ### Example: 100-host infrastructure
 
-**Datadog**:
-- Infrastructure Pro: $1,500/month (100 hosts × $15)
+**Datadog** (billed annually, 2026 pricing):
+- Infrastructure Pro: $1,500/month (100 hosts × $15/host/month)
+  - Or Enterprise: $2,300/month (100 hosts × $23/host/month)
 - Custom Metrics: $50/month (5,000 extra metrics beyond included 10,000)
 - Logs: $2,000/month (20GB/day × $0.10/GB × 30 days)
-- APM: $3,100/month (100 hosts × $31)
-- **Total**: ~$6,650/month ($79,800/year)
+- APM: $3,100/month (100 hosts × $31/host/month)
+- **Total**: ~$6,650-7,450/month ($79,800-89,400/year)
+- **Note**: Actual costs vary significantly with custom metrics volume, log ingestion rates, and add-ons (RUM, Synthetics, CSPM, etc.)
 
 **Open-Source Stack** (self-hosted):
 - Infrastructure: $1,200/month (EC2/GKE for Prometheus, Grafana, Loki, Tempo)
@@ -590,7 +592,7 @@ storage:
 - **Ops burden**: Low (fully managed)
 - **Upgrades**: Automatic
 - **Scaling**: Automatic
-- **Cost**: High ($6k-10k+/month)
+- **Cost**: High ($7k-10k+/month, varies significantly with add-ons)
 
 ### Open-Source Stack (Self-hosted)
 - **Ops burden**: Medium (requires ops team)
@@ -609,8 +611,8 @@ storage:
 
 ### Example Scenario
 
-**Before (Datadog)**:
-- Monthly cost: $7,000
+**Before (Datadog, Pro tier, billed annually)**:
+- Monthly cost: $7,000 (higher with Enterprise tier or add-ons)
 - Annual cost: $84,000
 
 **After (Self-hosted OSS)**:

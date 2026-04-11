@@ -1,24 +1,9 @@
 ---
 name: gitops-workflows
-description: GitOps deployment workflows with ArgoCD and Flux. Use for setting up GitOps (ArgoCD 3.x, Flux 2.7), designing repository structures (monorepo/polyrepo, app-of-apps), multi-cluster deployments (ApplicationSets, hub-spoke), secrets management (SOPS+age, Sealed Secrets, External Secrets Operator), progressive delivery (Argo Rollouts, Flagger), troubleshooting sync issues, and OCI artifact management. Covers latest 2024-2025 features: ArgoCD annotation-based tracking, fine-grained RBAC, Flux OCI artifacts GA, image automation, source-watcher.
+description: "GitOps deployment workflows with ArgoCD and Flux. Use this skill whenever the user mentions GitOps, ArgoCD, Flux, Flagger, Argo Rollouts, or continuous deployment to Kubernetes. Triggers include setting up ArgoCD or Flux from scratch, designing Git repository structures (monorepo vs polyrepo, app-of-apps), deploying to multiple clusters with ApplicationSets, managing secrets in Git (SOPS, Sealed Secrets, External Secrets Operator), implementing canary or blue-green deployments, troubleshooting sync or reconciliation issues, working with OCI artifacts, and comparing ArgoCD vs Flux."
 ---
 
 # GitOps Workflows
-
-## Overview
-
-This skill provides comprehensive GitOps workflows for continuous deployment to Kubernetes using ArgoCD 3.x and Flux 2.7+.
-
-**When to use this skill**:
-- Setting up GitOps from scratch (ArgoCD or Flux)
-- Designing Git repository structures
-- Multi-cluster deployments
-- Troubleshooting sync/reconciliation issues
-- Implementing secrets management
-- Progressive delivery (canary, blue-green)
-- Migrating between GitOps tools
-
----
 
 ## Core Workflow: GitOps Implementation
 
@@ -63,17 +48,10 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 **→ Template**: [assets/argocd/install-argocd-3.x.yaml](assets/argocd/install-argocd-3.x.yaml)
 
-### ArgoCD 3.x New Features
+### ArgoCD 3.x Key Changes
 
-**Breaking Changes**:
-- ✅ Annotation-based tracking (default, was labels)
-- ✅ RBAC logs enforcement enabled
-- ✅ Legacy metrics removed
-
-**New Features**:
-- ✅ Fine-grained RBAC (per-resource permissions)
-- ✅ Better defaults (resource exclusions for performance)
-- ✅ Secrets operators endorsement
+- **Breaking**: Annotation-based tracking (default, was labels), RBAC logs enforcement enabled, legacy metrics removed
+- **New**: Fine-grained RBAC (per-resource permissions), better defaults (resource exclusions), secrets operators endorsement
 
 ### Deploy Your First Application
 
@@ -92,13 +70,15 @@ argocd app sync guestbook
 ### Health Check
 
 ```bash
-# Check application health
-python3 scripts/check_argocd_health.py \
-  --server https://argocd.example.com \
-  --token $ARGOCD_TOKEN
-```
+# List all applications and their sync/health status
+argocd app list
 
-**→ Script**: [scripts/check_argocd_health.py](scripts/check_argocd_health.py)
+# Get detailed status for a specific application
+argocd app get <app-name>
+
+# Check applications via kubectl (no ArgoCD CLI needed)
+kubectl get applications.argoproj.io -A
+```
 
 ---
 
@@ -172,11 +152,15 @@ spec:
 ### Health Check
 
 ```bash
-# Check Flux health
-python3 scripts/check_flux_health.py --namespace flux-system
-```
+# Check all Flux resources across namespaces
+flux get all -A
 
-**→ Script**: [scripts/check_flux_health.py](scripts/check_flux_health.py)
+# Check Git sources
+flux get sources git
+
+# Check kustomization status
+flux get kustomizations
+```
 
 ---
 
@@ -230,15 +214,7 @@ app/
     └── production/
 ```
 
-**→ Reference**: [references/repo_patterns.md](references/repo_patterns.md)
-
-### Validate Repository Structure
-
-```bash
-python3 scripts/validate_gitops_repo.py /path/to/repo
-```
-
-**→ Script**: [scripts/validate_gitops_repo.py](scripts/validate_gitops_repo.py)
+**→ Reference**: [references/repo_patterns.md](references/repo_patterns.md) | **→ Script**: `python3 scripts/validate_gitops_repo.py /path/to/repo`
 
 ---
 
@@ -426,7 +402,8 @@ argocd app diff my-app
 argocd app sync my-app
 
 # Check health
-python3 scripts/check_argocd_health.py --server https://argocd.example.com --token $TOKEN
+argocd app list
+argocd app get my-app
 ```
 
 **Flux Not Reconciling**:
@@ -445,21 +422,17 @@ flux reconcile kustomization my-app
 **Detect Drift**:
 ```bash
 # ArgoCD drift detection
-python3 scripts/sync_drift_detector.py --argocd --app my-app
+argocd app diff my-app
 
-# Flux drift detection
-python3 scripts/sync_drift_detector.py --flux
+# Kubernetes manifest drift detection
+kubectl diff -f <manifest.yaml>
 ```
-
-**→ Script**: [scripts/sync_drift_detector.py](scripts/sync_drift_detector.py)
 
 **→ Reference**: [references/troubleshooting.md](references/troubleshooting.md)
 
 ---
 
-## 8. OCI Artifacts (Flux 2.6+)
-
-**GA Status**: Flux v2.6 (June 2025)
+## 8. OCI Artifacts (Flux 2.6+, GA June 2025)
 
 ### Use OCIRepository for Helm Charts
 
@@ -482,87 +455,43 @@ spec:
 ### Verify OCI Artifacts
 
 ```bash
-python3 scripts/oci_artifact_checker.py \
-  --verify ghcr.io/org/app:v1.0.0 \
-  --provider cosign
+# Check OCI sources managed by Flux
+flux get sources oci
+
+# Get detailed OCI repository status via kubectl
+kubectl get ocirepository -A -o json
 ```
 
-**→ Script**: [scripts/oci_artifact_checker.py](scripts/oci_artifact_checker.py)
-
 **→ Reference**: [references/oci_artifacts.md](references/oci_artifacts.md)
-
----
 
 ## Quick Reference Commands
 
 ### ArgoCD
 
 ```bash
-# List applications
-argocd app list
-
-# Get application details
-argocd app get <app-name>
-
-# Sync application
-argocd app sync <app-name>
-
-# View diff
-argocd app diff <app-name>
-
-# Delete application
-argocd app delete <app-name>
+argocd app list                    # List applications
+argocd app get <app-name>          # Get application details
+argocd app sync <app-name>         # Sync application
+argocd app diff <app-name>         # View diff
+argocd app delete <app-name>       # Delete application
 ```
 
 ### Flux
 
 ```bash
-# Check Flux status
-flux check
-
-# Get all resources
-flux get all
-
-# Reconcile immediately
-flux reconcile source git <name>
-flux reconcile kustomization <name>
-
-# Suspend/Resume
-flux suspend kustomization <name>
-flux resume kustomization <name>
-
-# Export resources
-flux export source git --all > sources.yaml
+flux check                                    # Check Flux status
+flux get all                                  # Get all resources
+flux reconcile source git <name>              # Reconcile immediately
+flux reconcile kustomization <name>           # Reconcile kustomization
+flux suspend kustomization <name>             # Suspend
+flux resume kustomization <name>              # Resume
+flux export source git --all > sources.yaml   # Export resources
 ```
-
----
 
 ## Resources Summary
 
-### Scripts (automation and diagnostics)
-- `check_argocd_health.py` - Diagnose ArgoCD sync issues (3.x compatible)
-- `check_flux_health.py` - Diagnose Flux reconciliation issues (2.7+ compatible)
-- `validate_gitops_repo.py` - Validate repository structure and manifests
-- `sync_drift_detector.py` - Detect drift between Git and cluster
-- `secret_audit.py` - Audit secrets management (SOPS, Sealed Secrets, ESO)
-- `applicationset_generator.py` - Generate ApplicationSet manifests
-- `promotion_validator.py` - Validate environment promotion workflows
-- `oci_artifact_checker.py` - Validate Flux OCI artifacts and verify signatures
+**Scripts**: `applicationset_generator.py` | `secret_audit.py` | `validate_gitops_repo.py`
 
-### References (deep-dive documentation)
-- `argocd_vs_flux.md` - Comprehensive comparison (2024-2025), decision matrix
-- `repo_patterns.md` - Monorepo vs polyrepo, app-of-apps, environment structures
-- `secret_management.md` - SOPS+age, Sealed Secrets, ESO (2025 best practices)
-- `progressive_delivery.md` - Argo Rollouts, Flagger, canary/blue-green patterns
-- `multi_cluster.md` - ApplicationSets, Flux multi-tenancy, hub-spoke patterns
-- `troubleshooting.md` - Common sync issues, debugging commands
-- `best_practices.md` - CNCF GitOps principles, security, 2025 recommendations
-- `oci_artifacts.md` - Flux OCI artifacts (GA v2.6), signature verification
+**References**: `argocd_vs_flux.md` | `repo_patterns.md` | `secret_management.md` | `progressive_delivery.md` | `multi_cluster.md` | `troubleshooting.md` | `best_practices.md` | `oci_artifacts.md`
 
-### Templates (production-ready configurations)
-- `argocd/install-argocd-3.x.yaml` - ArgoCD 3.x installation with best practices
-- `applicationsets/cluster-generator.yaml` - Multi-cluster ApplicationSet example
-- `flux/flux-bootstrap-github.sh` - Flux 2.7 bootstrap script
-- `flux/oci-helmrelease.yaml` - OCI artifact + HelmRelease example
-- `secrets/sops-age-config.yaml` - SOPS + age configuration
-- `progressive-delivery/argo-rollouts-canary.yaml` - Canary deployment with analysis
+**Templates**: `argocd/install-argocd-3.x.yaml` | `applicationsets/cluster-generator.yaml` | `flux/flux-bootstrap-github.sh` | `flux/oci-helmrelease.yaml` | `secrets/sops-age-config.yaml` | `progressive-delivery/argo-rollouts-canary.yaml`
