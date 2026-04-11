@@ -7,32 +7,38 @@
     {
       "name": "iac-terraform",
       "source": "./iac-terraform",
-      "description": "Infrastructure as Code with Terraform and Terragrunt. Use for .tf files, modules, state management, CI/CD, and Terragrunt patterns."
+      "description": "Infrastructure as Code with Terraform and Terragrunt. Use for .tf files, modules, state management, CI/CD, and Terragrunt patterns.",
+      "skills": ["./skills"]
     },
     {
       "name": "k8s-troubleshooter",
       "source": "./k8s-troubleshooter",
-      "description": "Systematic Kubernetes troubleshooting and incident response. Use for pod failures, cluster issues, networking, storage, Helm, and performance."
+      "description": "Systematic Kubernetes troubleshooting and incident response. Use for pod failures, cluster issues, networking, storage, Helm, and performance.",
+      "skills": ["./skills"]
     },
     {
       "name": "aws-cost-optimization",
       "source": "./aws-cost-optimization",
-      "description": "AWS cost optimization and FinOps workflows. Use for unused resources, rightsizing, Reserved Instances, Spot, cost anomalies, and budgets."
+      "description": "AWS cost optimization and FinOps workflows. Use for unused resources, rightsizing, Reserved Instances, Spot, cost anomalies, and budgets.",
+      "skills": ["."]
     },
     {
       "name": "ci-cd",
       "source": "./ci-cd",
-      "description": "CI/CD pipeline design, optimization, DevSecOps, and troubleshooting. Use for GitHub Actions, GitLab CI, security scanning, and build optimization."
+      "description": "CI/CD pipeline design, optimization, DevSecOps, and troubleshooting. Use for GitHub Actions, GitLab CI, security scanning, and build optimization.",
+      "skills": ["."]
     },
     {
       "name": "monitoring-observability",
       "source": "./monitoring-observability",
-      "description": "Monitoring and observability strategy. Use for metrics, logs, traces, alerting, SLOs, Prometheus, Grafana, Datadog, OpenTelemetry, and tool selection."
+      "description": "Monitoring and observability strategy. Use for metrics, logs, traces, alerting, SLOs, Prometheus, Grafana, Datadog, OpenTelemetry, and tool selection.",
+      "skills": ["."]
     },
     {
       "name": "gitops-workflows",
       "source": "./gitops-workflows",
-      "description": "GitOps deployment workflows with ArgoCD and Flux. Use for GitOps setup, repository structure, multi-cluster, secrets, progressive delivery, and sync issues."
+      "description": "GitOps deployment workflows with ArgoCD and Flux. Use for GitOps setup, repository structure, multi-cluster, secrets, progressive delivery, and sync issues.",
+      "skills": ["."]
     }
   ]
 }
