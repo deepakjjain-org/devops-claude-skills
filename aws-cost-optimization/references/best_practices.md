@@ -18,13 +18,16 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 ### EC2 Instance Optimization
 
 **Right Instance Family**
-- **General Purpose (T3, M5, M6i)**: Web servers, small-medium databases, dev environments
-- **Compute Optimized (C5, C6i, C6g)**: CPU-intensive workloads, batch processing, HPC
-- **Memory Optimized (R5, R6i, R6g)**: Databases, in-memory caches, big data
-- **Storage Optimized (I3, D2)**: High IOPS, data warehousing, Hadoop
+- **General Purpose (T3/T4g, M5/M6i/M7i/M8g, M9g)**: Web servers, small-medium databases, dev environments
+- **Compute Optimized (C5/C6i/C7i/C8g, C9g coming later 2026)**: CPU-intensive workloads, batch processing, HPC
+- **Memory Optimized (R5/R6i/R7i/R8g, R9g coming later 2026)**: Databases, in-memory caches, big data
+- **Storage Optimized (I3/I4i, D2/D3)**: High IOPS, data warehousing, Hadoop
+- **Legacy (t2, m4, c4, r4)**: Should be migrated to current generation families
 
 **Graviton Migration (ARM64)**
-- Up to 20% cost savings with M6g, C6g, R6g, T4g instances
+- 25-30% cost savings with Graviton4/5 instances (M8g, C8g, R8g, and newer M9g)
+- Graviton5 (M9g announced Jan 2026; C9g/R9g coming later 2026) delivers improved performance per watt
+- T4g is now the budget Graviton option for burstable workloads
 - Test compatibility first: Most modern languages/frameworks support ARM64
 - Best for: Stateless applications, containerized workloads, open-source software
 
@@ -32,7 +35,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 - Start small and scale up based on metrics
 - Monitor CPU, memory, network for 2+ weeks before committing
 - Use CloudWatch metrics to identify underutilized instances
-- Consider burstable instances (T3) for variable workloads
+- Consider burstable instances (T3/T4g) for variable workloads
 
 **Purchase Options**
 - **On-Demand**: Flexible, no commitment, highest cost
@@ -71,7 +74,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 **Execution Time**
 - Optimize code to reduce execution duration
 - Every 100ms of execution matters at scale
-- Consider Graviton2 (arm64) for 20% better price/performance
+- Consider Graviton (arm64) for 25-30% better price/performance
 
 ---
 
@@ -188,7 +191,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 **Instance Sizing**
 - Right-size based on CloudWatch metrics (CPU, memory, connections)
 - Consider burstable instances (db.t3) for variable workloads
-- Graviton instances (db.m6g, db.r6g) offer 20% savings
+- Graviton instances (db.m6g, db.m7g, db.m8g, db.r6g, db.r7g, db.r8g) offer 25-30% savings
 
 **Storage Optimization**
 - Use gp3 instead of gp2 (20% cheaper)
@@ -228,7 +231,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 ### ElastiCache Optimization
 
 **Node Types**
-- Graviton instances (cache.m6g, cache.r6g) for 20% savings
+- Graviton instances (cache.m7g, cache.r7g, or newer) for 25-30% savings
 - Right-size based on memory usage and eviction rates
 
 **Redis vs Memcached**
@@ -253,7 +256,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 
 **Graviton Support**
 - Fargate ARM64 support available
-- ECS on Graviton2 EC2 instances for 20% savings
+- ECS on Graviton EC2 instances (Graviton4/5) for 25-30% savings
 
 **Right-sizing**
 - Start with minimal CPU/memory, scale up based on metrics
@@ -352,7 +355,7 @@ Comprehensive strategies for optimizing AWS costs across all major service categ
 - [ ] Enable S3 Intelligent-Tiering
 - [ ] Set up S3 lifecycle policies
 - [ ] Replace NAT Gateways with VPC Endpoints where possible
-- [ ] Migrate to Graviton instances
+- [ ] Migrate to Graviton instances (Graviton4/5 for 25-30% savings)
 - [ ] Purchase Reserved Instances/Savings Plans for stable workloads
 - [ ] Use Spot instances for fault-tolerant workloads
 - [ ] Delete old RDS snapshots

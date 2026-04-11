@@ -47,34 +47,41 @@ Batch processing → Fargate Spot or EC2 Spot
 ### EC2 Instance Alternatives
 
 **Standard vs Graviton (ARM64)**
-- **Graviton Savings**: 20% cheaper for same performance
+- **Graviton Savings**: 25-30% cheaper with Graviton4 (2024) and Graviton5 (2026) instances
 - **When to use**: Modern applications, ARM-compatible workloads
+- **Current Graviton families**: T4g (budget), M8g/M9g (general purpose), C8g (compute), R8g (memory)
 - **Alternatives**:
-  - t3.large → t4g.large (20% cheaper)
-  - m5.xlarge → m6g.xlarge (20% cheaper)
-  - c5.2xlarge → c6g.2xlarge (20% cheaper)
+  - t3.large → t4g.large
+  - m5.xlarge → m8g.xlarge (or m9g.xlarge for latest Graviton5)
+  - c5.2xlarge → c8g.2xlarge
+- **Note**: Check current pricing at aws.amazon.com/ec2/pricing
 - **Considerations**: Test application compatibility first
 
 **Current vs Previous Generation**
 - **Migration Savings**: 5-10% cheaper, better performance
+- **Legacy families (migrate ASAP)**: t2, m4, c4, r4
+- **Current generation**: t3/t4g, m5/m6i/m7i/m8g/m9g, c5/c6i/c7i/c8g, r5/r6i/r7i/r8g
 - **Examples**:
-  - t2 → t3 (10% cheaper, better performance)
-  - m4 → m5 → m6i (progressive improvements)
-  - c4 → c5 → c6i (better price/performance)
+  - t2 → t3 or t4g (legacy to current)
+  - m4 → m5 → m6i → m7i/m8g (progressive improvements)
+  - c4 → c5 → c6i → c7i/c8g (better price/performance)
 - **Action**: Run `aws ec2 describe-instances` and filter for t2, m4, c4, r4 families
 
 **On-Demand vs Spot vs Reserved**
-- **On-Demand**: $X/hour, highest cost, full flexibility
+- **On-Demand**: Highest cost, full flexibility
 - **Spot**: 60-90% discount, can be interrupted
 - **Reserved (1yr)**: 30-40% discount
 - **Reserved (3yr)**: 50-65% discount
 - **Decision**: Use Spot for fault-tolerant, RI for predictable, On-Demand for rest
+- **Note**: Check current pricing at aws.amazon.com/ec2/pricing
 
 ---
 
 ## Storage Alternatives
 
 ### S3 Storage Classes
+
+> **Note**: Prices below are approximate (us-east-1). Verify current pricing at aws.amazon.com/s3/pricing.
 
 **Frequently Accessed Data**
 ```
@@ -423,7 +430,7 @@ Multiple environments → Consider single EKS cluster with namespaces
 - [ ] S3 Standard → Intelligent-Tiering (auto-optimization)
 - [ ] NAT Gateway → VPC Endpoints for S3/DynamoDB (free)
 - [ ] Old generation instances → New generation (10-20% savings)
-- [ ] Intel → Graviton (20% savings, test first)
+- [ ] Intel → Graviton4/5 (25-30% savings, test first)
 
 ### Medium Effort Actions
 - [ ] On-Demand → Reserved Instances/Savings Plans (40-65% savings)

@@ -377,7 +377,7 @@ Graph showing:
 
 **Template**:
 ```markdown
-# SLO Report: October 2024
+# SLO Report: March 2026
 
 ## Executive Summary
 - ✅ All SLOs met this month
@@ -406,26 +406,26 @@ Graph showing:
 
 ## Incidents
 
-### Incident #1: Database Overload (Oct 5)
+### Incident #1: Database Overload (Mar 5)
 - Duration: 15 minutes
 - Error budget consumed: 35%
 - Root cause: Slow query after schema change
 - Prevention: Added query review to deploy checklist
 
-### Incident #2: API Gateway Timeout (Oct 12)
+### Incident #2: API Gateway Timeout (Mar 12)
 - Duration: 5 minutes
 - Error budget consumed: 10%
 - Root cause: Configuration error in load balancer
 - Prevention: Automated configuration validation
 
-### Incident #3: Upstream Service Degradation (Oct 20)
+### Incident #3: Upstream Service Degradation (Mar 20)
 - Duration: 3 minutes
 - Error budget consumed: 2%
 - Root cause: Third-party API outage
 - Prevention: Implemented circuit breaker
 
 ## Recommendations
-1. Investigate latency near-miss (Oct 15-17)
+1. Investigate latency near-miss (Mar 15-17)
 2. Add automated rollback for database changes
 3. Increase circuit breaker thresholds for third-party APIs
 4. Consider tightening availability SLO to 99.95%

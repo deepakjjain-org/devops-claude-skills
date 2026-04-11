@@ -252,7 +252,7 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:8080/health; do sleep 2; done'
 
       - name: ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.10.0
+        uses: zaproxy/action-baseline@v2.17.0
         with:
           target: 'http://localhost:8080'
           rules_file_name: '.zap/rules.tsv'
@@ -409,8 +409,8 @@ snyk:
 ```yaml
 - name: OWASP Dependency Check
   run: |
-    wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
-    unzip dependency-check-8.4.0-release.zip
+    wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.2.0/dependency-check-9.2.0-release.zip
+    unzip dependency-check-9.2.0-release.zip
     ./dependency-check/bin/dependency-check.sh \
       --scan . \
       --format JSON \
@@ -737,7 +737,7 @@ jobs:
     needs: build-scan
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: zaproxy/action-baseline@v0.10.0
+      - uses: zaproxy/action-baseline@v2.17.0
         with:
           target: 'https://staging.example.com'
 
