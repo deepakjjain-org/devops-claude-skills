@@ -1,0 +1,65 @@
+---
+name: Upstream Sync
+# https://github.com/marketplace/actions/upstream-sync
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 7am UTC, everyday
+  push:
+    branches: [automation]
+    paths:
+      - .github/workflows/sync.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync to Upstream Repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # optional: set the branch to checkout,
+          # sync action checks out your 'target_sync_branch' anyway
+          # ref: main
+          # REQUIRED if your upstream repo is private (see wiki)
+          persist-credentials: false
+
+      - name: Sync to Upstream Repository
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          target_branch_push_args: --force --tags
+          upstream_pull_args: --rebase=true --tags
+          upstream_sync_branch: main
+          upstream_sync_repo: gruntwork-io/terraform-aws-openvpn
+          upstream_repo_access_token: ${{ secrets.GH_TOKEN_GRUNTWORK || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          git_config_user: Sean Trane Sciarrone
+          git_config_email: seantrane@users.noreply.github.com
+          git_config_pull_rebase: true
+          # Set test_mode true to run tests instead of the true action!!
+          test_mode: false
+
+      # Display messages based on the sync output var 'has_new_commits'
+      - name: New commits found
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: echo "New commits were found to sync."
+
+      - name: No new commits
+        if: steps.sync.outputs.has_new_commits == 'false'
+        run: echo "There were no new commits."
+
+      - name: Show value of 'has_new_commits'
+        run: echo ${{ steps.sync.outputs.has_new_commits }}
+
+      - name: Show value of 'has_new_commits'
+        run: echo ${{ steps.sync.outputs.has_new_commits }}
+        
